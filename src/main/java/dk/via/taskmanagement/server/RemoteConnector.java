@@ -27,4 +27,9 @@ public class RemoteConnector implements Connector {
     public void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException {
         workspace.getWorkspaceUserList().addUser(newUser);
     }
+
+    @Override
+    public User createUser(User user) throws RemoteException {
+        return null;
+    }
 }

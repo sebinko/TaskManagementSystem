@@ -6,6 +6,9 @@ module dk.via.taskmanagement {
 
 
     opens dk.via.taskmanagement to javafx.fxml;
+    opens dk.via.taskmanagement.view to javafx.fxml;
+
     exports dk.via.taskmanagement;
     exports dk.via.taskmanagement.shared to java.rmi;
+    exports dk.via.taskmanagement.view to javafx.fxml;
 }

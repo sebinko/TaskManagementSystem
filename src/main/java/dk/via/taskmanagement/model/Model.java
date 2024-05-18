@@ -6,4 +6,6 @@ public interface Model {
     Workspace createWorkspace(Workspace workspace);
     Workspace getWorkspace(User requestingUser);
     void addWorkSpaceUser(Workspace workspace, User newUser);
+
+    User createUser(User user);
 }

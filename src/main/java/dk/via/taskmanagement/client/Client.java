@@ -9,4 +9,6 @@ public interface Client {
     Workspace createWorkspace(Workspace workspace) throws RemoteException;
     Workspace getWorkspace(User requestingUser) throws RemoteException;
     void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException;
+
+    User createUser(User user) throws RemoteException;
 }

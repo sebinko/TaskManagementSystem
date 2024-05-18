@@ -39,4 +39,13 @@ public class ModelManager implements Model{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public User createUser(User user) {
+        try {
+            return client.createUser(user);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

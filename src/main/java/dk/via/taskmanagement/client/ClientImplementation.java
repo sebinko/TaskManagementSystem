@@ -33,4 +33,11 @@ public class ClientImplementation extends UnicastRemoteObject implements Client 
     public void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException {
         connector.addWorkSpaceUser(workspace, newUser);
     }
+
+    @Override
+    public User createUser(User user) throws RemoteException {
+        connector.createUser(user);
+
+        return user;
+    }
 }

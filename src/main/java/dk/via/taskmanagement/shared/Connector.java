@@ -12,6 +12,8 @@ public interface Connector extends Remote {
     void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException;
 //    void removeWorkSpaceUser(User user) throws RemoteException;
 
+    User createUser(User user) throws RemoteException;
+
 
 
 }
