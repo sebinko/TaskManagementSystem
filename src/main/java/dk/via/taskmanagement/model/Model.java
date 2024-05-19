@@ -1,5 +1,7 @@
 package dk.via.taskmanagement.model;
 
+import dk.via.taskmanagement.exceptions.AuthenticationException;
+
 import java.rmi.RemoteException;
 
 public interface Model {
@@ -8,4 +10,6 @@ public interface Model {
     void addWorkSpaceUser(Workspace workspace, User newUser);
 
     User createUser(User user);
+    User getUserByUsername(String username);
+    User authenticateUser(String username, String password) throws AuthenticationException;
 }

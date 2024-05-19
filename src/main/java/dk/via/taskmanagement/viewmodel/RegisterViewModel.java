@@ -1,7 +1,9 @@
 package dk.via.taskmanagement.viewmodel;
 
 import dk.via.taskmanagement.model.Model;
+import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.validation.UserValidation;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,12 +15,15 @@ public class RegisterViewModel {
     private StringProperty passwordConfirmation;
     private StringProperty message;
 
+    private StringProperty role;
+
     public RegisterViewModel(Model model) {
         this.model = model;
         username = new SimpleStringProperty();
         password = new SimpleStringProperty();
         passwordConfirmation = new SimpleStringProperty();
         message = new SimpleStringProperty();
+        role = new SimpleStringProperty();
     }
 
     public void bindUsername(StringProperty property) {
@@ -37,6 +42,10 @@ public class RegisterViewModel {
         property.bind(message);
     }
 
+    public void bindRole(ObjectProperty<String> property) {
+        property.bindBidirectional(role);
+    }
+
     public void register() {
         if (!UserValidation.validateUsername(username.get())) {
             message.set("Username must be at least 8 characters long");
@@ -53,7 +62,10 @@ public class RegisterViewModel {
             return;
         }
 
-//        model.register(username.get(), password.get());
+        User user = new User(username.get(), password.get(), role.get(), null);
+
+        model.createUser(user);
+        message.set("User created successfully");
     }
 
 

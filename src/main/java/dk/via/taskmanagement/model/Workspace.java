@@ -23,6 +23,10 @@ public class Workspace implements Serializable {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public WorkspaceUserList getWorkspaceUserList() {
         return workspaceUserList;
     }

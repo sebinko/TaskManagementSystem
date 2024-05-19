@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.shared;
 
+import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 
@@ -13,6 +14,8 @@ public interface Connector extends Remote {
 //    void removeWorkSpaceUser(User user) throws RemoteException;
 
     User createUser(User user) throws RemoteException;
+    User getUserByUsername(String username) throws RemoteException;
+    User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
 
 

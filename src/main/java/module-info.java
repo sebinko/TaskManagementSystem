@@ -1,8 +1,10 @@
 module dk.via.taskmanagement {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.postgresql.jdbc;
     requires java.rmi;
     requires java.desktop;
+    requires java.sql;
 
 
     opens dk.via.taskmanagement to javafx.fxml;

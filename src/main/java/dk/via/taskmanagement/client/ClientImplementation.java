@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.client;
 
+import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 import dk.via.taskmanagement.shared.Connector;
@@ -37,6 +38,20 @@ public class ClientImplementation extends UnicastRemoteObject implements Client 
     @Override
     public User createUser(User user) throws RemoteException {
         connector.createUser(user);
+
+        return user;
+    }
+
+    @Override
+    public User getUserByUsername(String username) throws RemoteException {
+        User user = connector.getUserByUsername(username);
+
+        return user;
+    }
+
+    @Override
+    public User authenticateUser(String username, String password) throws RemoteException, AuthenticationException {
+        User user = connector.authenticateUser(username, password);
 
         return user;
     }
