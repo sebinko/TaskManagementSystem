@@ -6,7 +6,7 @@ import org.postgresql.Driver;
 
 import java.sql.*;
 
-public class WorkspaceDAOImplementation implements WorkspaceDAO{
+public class WorkspaceDAOImplementation implements WorkspaceDAO {
     private static WorkspaceDAOImplementation instance;
 
     private WorkspaceDAOImplementation() throws SQLException {
@@ -23,6 +23,7 @@ public class WorkspaceDAOImplementation implements WorkspaceDAO{
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=task_management_system", "postgres", "");
     }
+
     @Override
     public Workspace createWorkspace(Workspace workspace) throws SQLException {
         try (Connection connection = getConnection()) {

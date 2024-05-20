@@ -8,6 +8,7 @@ public class Workspace implements Serializable {
     private String name;
 
     private ArrayList<User> users = new ArrayList<>();
+
     public Workspace(String name) {
         this.id = 0;
         this.name = name;

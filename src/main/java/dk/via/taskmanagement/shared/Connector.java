@@ -9,14 +9,17 @@ import java.rmi.RemoteException;
 
 public interface Connector extends Remote {
     Workspace createWorkspace(Workspace workspace) throws RemoteException;
+
     Workspace getWorkspace(User requestingUser) throws RemoteException;
+
     void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException;
 //    void removeWorkSpaceUser(User user) throws RemoteException;
 
     User createUser(User user) throws RemoteException;
-    User getUserByUsername(String username) throws RemoteException;
-    User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
+    User getUserByUsername(String username) throws RemoteException;
+
+    User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
 
 }

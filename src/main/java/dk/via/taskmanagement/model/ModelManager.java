@@ -7,10 +7,10 @@ import dk.via.taskmanagement.shared.Connector;
 
 import java.rmi.RemoteException;
 
-public class ModelManager implements Model{
+public class ModelManager implements Model {
     private final Client client;
 
-    public ModelManager(Connector connector) throws RemoteException{
+    public ModelManager(Connector connector) throws RemoteException {
         this.client = new ClientImplementation(connector);
     }
 
@@ -51,7 +51,7 @@ public class ModelManager implements Model{
     }
 
     @Override
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         try {
             return client.getUserByUsername(username);
         } catch (RemoteException e) {

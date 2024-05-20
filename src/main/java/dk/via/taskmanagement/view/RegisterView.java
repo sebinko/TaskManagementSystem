@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 
 
-
 public class RegisterView {
     private ViewHandler viewHandler;
     private RegisterViewModel registerViewModel;
