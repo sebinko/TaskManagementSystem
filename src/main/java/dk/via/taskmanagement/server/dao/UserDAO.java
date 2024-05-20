@@ -1,6 +1,7 @@
 package dk.via.taskmanagement.server.dao;
 
 import dk.via.taskmanagement.model.User;
+import dk.via.taskmanagement.model.Workspace;
 
 import java.sql.SQLException;
 
@@ -11,4 +12,6 @@ public interface UserDAO {
 
     User create(User user) throws SQLException;
 //    User update(int id, String username, String password, String role, int workspaceId);
+
+
 }

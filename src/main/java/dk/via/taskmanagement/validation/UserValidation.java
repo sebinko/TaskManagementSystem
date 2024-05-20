@@ -12,4 +12,8 @@ public class UserValidation {
     public static boolean validatePasswordConfirmation(String password, String passwordConfirmation) {
         return password != null && password.equals(passwordConfirmation);
     }
+
+    public static boolean validateRole(String role) {
+        return role != null && (role.equals("admin") || role.equals("member"));
+    }
 }

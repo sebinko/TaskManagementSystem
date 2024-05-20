@@ -26,10 +26,10 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public User getById(int id) throws SQLException {
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE user_id = ?");
-            statement.setInt(1, id);
-        }
+//        try (Connection connection = getConnection()) {
+//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+//            statement.setInt(1, id);
+//        }
 
         return null;
     }
@@ -44,12 +44,13 @@ public class UserDAOImplementation implements UserDAO {
 
             if (resultSet.next()) {
                 // TODO workspace
+                Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
                 return new User(
                         resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        null
+                        workspace
                 );
             } else {
                 return null;
@@ -96,6 +97,11 @@ public class UserDAOImplementation implements UserDAO {
             statement.executeUpdate();
         }
 
+        // select the user back
+        user = getByUsername(user.getUserName());
+
         return user;
     }
+
+
 }

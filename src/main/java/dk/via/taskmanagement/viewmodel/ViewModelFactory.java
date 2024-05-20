@@ -5,10 +5,12 @@ import dk.via.taskmanagement.model.Model;
 public class ViewModelFactory {
     private final LoginViewModel loginViewModel;
     private final RegisterViewModel registerViewModel;
+    private final CreateWorkspaceViewModel createWorkspaceViewModel;
 
     public ViewModelFactory(Model model) {
         loginViewModel = new LoginViewModel(model);
         registerViewModel = new RegisterViewModel(model);
+        createWorkspaceViewModel = new CreateWorkspaceViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel() {
@@ -17,5 +19,9 @@ public class ViewModelFactory {
 
     public RegisterViewModel getRegisterViewModel() {
         return registerViewModel;
+    }
+
+    public CreateWorkspaceViewModel getCreateWorkspaceViewModel() {
+        return createWorkspaceViewModel;
     }
 }

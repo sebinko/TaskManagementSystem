@@ -3,6 +3,7 @@ package dk.via.taskmanagement.viewmodel;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
+import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.validation.UserValidation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -46,11 +47,11 @@ public class LoginViewModel {
 
         try {
             User user = model.authenticateUser(username.get(), password.get());
+
+            Auth.getInstance().setCurrentUser(user);
+            message.set("Login successful");
         } catch (AuthenticationException e) {
             message.set("Invalid username or password");
-            return;
         }
-
-        message.set("Login successful");
     }
 }

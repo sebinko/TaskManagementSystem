@@ -46,26 +46,33 @@ public class RegisterViewModel {
         property.bindBidirectional(role);
     }
 
-    public void register() {
+    public User register() {
         if (!UserValidation.validateUsername(username.get())) {
             message.set("Username must be at least 8 characters long");
-            return;
+            return null;
         }
 
         if (!UserValidation.validatePassword(password.get())) {
             message.set("Password must be at least 8 characters long");
-            return;
+            return null;
         }
 
         if (!UserValidation.validatePasswordConfirmation(password.get(), passwordConfirmation.get())) {
             message.set("Passwords do not match");
-            return;
+            return null;
+        }
+
+        if (!UserValidation.validateRole(role.get())) {
+            message.set("Invalid role");
+            return null;
         }
 
         User user = new User(username.get(), password.get(), role.get(), null);
 
-        model.createUser(user);
+        user = model.createUser(user);
         message.set("User created successfully");
+
+        return user;
     }
 
 

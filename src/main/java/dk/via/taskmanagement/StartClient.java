@@ -2,8 +2,6 @@ package dk.via.taskmanagement;
 
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.ModelManager;
-import dk.via.taskmanagement.model.Workspace;
-import dk.via.taskmanagement.model.WorkspaceUserList;
 import dk.via.taskmanagement.shared.Connector;
 import dk.via.taskmanagement.view.ViewHandler;
 import dk.via.taskmanagement.viewmodel.ViewModelFactory;

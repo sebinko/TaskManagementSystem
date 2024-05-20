@@ -37,9 +37,7 @@ public class ClientImplementation extends UnicastRemoteObject implements Client 
 
     @Override
     public User createUser(User user) throws RemoteException {
-        connector.createUser(user);
-
-        return user;
+        return connector.createUser(user);
     }
 
     @Override

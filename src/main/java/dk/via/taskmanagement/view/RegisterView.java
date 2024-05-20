@@ -1,5 +1,7 @@
 package dk.via.taskmanagement.view;
 
+import dk.via.taskmanagement.model.User;
+import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.viewmodel.RegisterViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -50,9 +52,19 @@ public class RegisterView {
         viewHandler.openView(ViewFactory.WELCOME);
     }
 
+
+    private void openCreateWorkspaceView() {
+        viewHandler.openView(ViewFactory.CREATE_WORKSPACE);
+    }
+
     @FXML
     public void register() {
-        registerViewModel.register();
+        User user = registerViewModel.register();
+        if (user != null && role.getValue().equals("admin")) {
+            openCreateWorkspaceView();
+        }
+
+        Auth.getInstance().setCurrentUser(user);
     }
 
 }

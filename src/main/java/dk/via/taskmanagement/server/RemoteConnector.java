@@ -3,43 +3,45 @@ package dk.via.taskmanagement.server;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
-import dk.via.taskmanagement.model.WorkspaceUserList;
 import dk.via.taskmanagement.server.dao.UserDAOImplementation;
+import dk.via.taskmanagement.server.dao.WorkspaceDAOImplementation;
 import dk.via.taskmanagement.shared.Connector;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 public class RemoteConnector implements Connector {
-    private WorkspaceUserList workspaceUserList = new WorkspaceUserList();
-    private Workspace workspace = new Workspace("Workspace 1", workspaceUserList);
 
     @Override
     public Workspace createWorkspace(Workspace workspace) throws RemoteException {
-        this.workspace = workspace;
-
-        return workspace;
+        try {
+            return WorkspaceDAOImplementation.getInstance().createWorkspace(workspace);
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override
     public Workspace getWorkspace(User requestingUser) throws RemoteException {
-        return workspace;
+        return null;
     }
 
     @Override
     public void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException {
-        workspace.getWorkspaceUserList().addUser(newUser);
+        try {
+            WorkspaceDAOImplementation.getInstance().addWorkSpaceUser(workspace, newUser);
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     @Override
     public User createUser(User user) throws RemoteException {
         try {
-            UserDAOImplementation.getInstance().create(user);
+            return UserDAOImplementation.getInstance().create(user);
         } catch (SQLException e) {
             throw new RemoteException(e.getMessage());
         }
-
-        return user;
     }
 
     @Override
