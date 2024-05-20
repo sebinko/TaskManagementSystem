@@ -69,13 +69,14 @@ public class UserDAOImplementation implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                // TODO workspace
+                Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
+
                 return new User(
                         resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        null
+                        workspace
                 );
             } else {
                 return null;
