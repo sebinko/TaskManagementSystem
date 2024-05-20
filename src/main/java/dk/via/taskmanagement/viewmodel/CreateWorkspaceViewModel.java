@@ -4,6 +4,7 @@ import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 import dk.via.taskmanagement.utilities.Auth;
+import dk.via.taskmanagement.validation.WorkspaceValidation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -29,6 +30,11 @@ public class CreateWorkspaceViewModel {
     }
 
     public Workspace createWorkspace() {
+        if (WorkspaceValidation.validateName(name.get())) {
+            message.set("Name must not be empty");
+            return null;
+        }
+
         Workspace workspace = model.createWorkspace(new Workspace(name.get()));
         User user = Auth.getInstance().getCurrentUser();
 

@@ -25,16 +25,6 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     @Override
-    public User getById(int id) throws SQLException {
-//        try (Connection connection = getConnection()) {
-//            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE user_id = ?");
-//            statement.setInt(1, id);
-//        }
-
-        return null;
-    }
-
-    @Override
     public User getByUsername(String username) throws SQLException {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE name = ?");
@@ -45,46 +35,11 @@ public class UserDAOImplementation implements UserDAO {
             if (resultSet.next()) {
                 // TODO workspace
                 Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
-                return new User(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        workspace
-                );
+                return new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), workspace);
             } else {
                 return null;
             }
 
-        }
-    }
-
-    @Override
-    public User getByUsernameAndPassword(String username, String password) {
-        try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE name = ? AND password = ?");
-            statement.setString(1, username);
-            statement.setString(2, password);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
-
-                return new User(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        workspace
-                );
-            } else {
-                return null;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
@@ -98,7 +53,6 @@ public class UserDAOImplementation implements UserDAO {
             statement.executeUpdate();
         }
 
-        // select the user back
         user = getByUsername(user.getUserName());
 
         return user;
