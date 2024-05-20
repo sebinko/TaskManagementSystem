@@ -40,4 +40,7 @@ public class CreateWorkspaceView {
     private void openWelcomeView() {
         viewHandler.openView(ViewFactory.WELCOME);
     }
+    private void openWorkspaceView() {
+        viewHandler.openView(ViewFactory.WORKSPACE);
+    }
 }

@@ -6,11 +6,13 @@ public class ViewModelFactory {
     private final LoginViewModel loginViewModel;
     private final RegisterViewModel registerViewModel;
     private final CreateWorkspaceViewModel createWorkspaceViewModel;
+    private final WorkspaceViewModel workspaceViewModel;
 
     public ViewModelFactory(Model model) {
         loginViewModel = new LoginViewModel(model);
         registerViewModel = new RegisterViewModel(model);
         createWorkspaceViewModel = new CreateWorkspaceViewModel(model);
+        workspaceViewModel = new WorkspaceViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel() {
@@ -23,5 +25,9 @@ public class ViewModelFactory {
 
     public CreateWorkspaceViewModel getCreateWorkspaceViewModel() {
         return createWorkspaceViewModel;
+    }
+
+    public WorkspaceViewModel getWorkspaceViewModel() {
+        return workspaceViewModel;
     }
 }

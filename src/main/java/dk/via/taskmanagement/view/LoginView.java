@@ -42,8 +42,12 @@ public class LoginView {
         }
 
         if (user != null) {
-            openWelcomeView();
+            openWorkspaceView();
         }
+    }
+
+    private void openWorkspaceView() {
+        viewHandler.openView(ViewFactory.WORKSPACE);
     }
 
     private void showWorkSpaceMissingAlert() {
