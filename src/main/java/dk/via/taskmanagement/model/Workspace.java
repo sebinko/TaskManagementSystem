@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Workspace implements Serializable {
-    private final int id;
+    private final Integer id;
     private String name;
 
     private ArrayList<User> users = new ArrayList<>();
 
     public Workspace(String name) {
-        this.id = 0;
+        this.id = null;
         this.name = name;
     }
 

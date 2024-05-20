@@ -3,14 +3,14 @@ package dk.via.taskmanagement.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private final int id;
+    private final Integer id;
     private String userName;
     private String password;
     private String role;
     private Workspace workspace;
 
     public User(String userName, String password, String role, Workspace workspace) {
-        this.id = 0;
+        this.id = null;
         this.userName = userName;
         this.password = password;
         this.role = role;

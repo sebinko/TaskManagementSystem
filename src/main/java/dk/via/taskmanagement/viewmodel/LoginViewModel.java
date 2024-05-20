@@ -34,15 +34,15 @@ public class LoginViewModel {
         property.bind(message);
     }
 
-    public void login() {
+    public User login() {
         if (!UserValidation.validateUsername(username.get())) {
             message.set("Username must be at least 8 characters long");
-            return;
+            return null;
         }
 
         if (!UserValidation.validatePassword(password.get())) {
             message.set("Password must be at least 8 characters long");
-            return;
+            return null;
         }
 
         try {
@@ -50,8 +50,11 @@ public class LoginViewModel {
 
             Auth.getInstance().setCurrentUser(user);
             message.set("Login successful");
+
+            return user;
         } catch (AuthenticationException e) {
             message.set("Invalid username or password");
+            return null;
         }
     }
 }
