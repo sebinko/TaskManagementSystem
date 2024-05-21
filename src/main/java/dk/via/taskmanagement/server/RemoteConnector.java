@@ -1,5 +1,7 @@
 package dk.via.taskmanagement.server;
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
@@ -9,16 +11,28 @@ import dk.via.taskmanagement.shared.Connector;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class RemoteConnector implements Connector {
+    private final RemotePropertyChangeSupport support;
+
+    public RemoteConnector() {
+        support = new RemotePropertyChangeSupport();
+    }
+
 
     @Override
     public Workspace createWorkspace(Workspace workspace) throws RemoteException {
         try {
-            return WorkspaceDAOImplementation.getInstance().createWorkspace(workspace);
+            Workspace newWorkspace = WorkspaceDAOImplementation.getInstance().createWorkspace(workspace);
+
+            support.firePropertyChange("createWorkspace", null, newWorkspace);
+
+            return newWorkspace;
         } catch (SQLException e) {
             throw new RemoteException(e.getMessage());
         }
+
     }
 
     @Override
@@ -33,6 +47,8 @@ public class RemoteConnector implements Connector {
         } catch (SQLException e) {
             throw new RemoteException(e.getMessage());
         }
+
+        support.firePropertyChange("addWorkSpaceUser", null, newUser);
     }
 
     @Override
@@ -66,5 +82,19 @@ public class RemoteConnector implements Connector {
         } catch (SQLException e) {
             throw new RemoteException(e.getMessage());
         }
+    }
+
+    @Override
+    public ArrayList<User> getUsersWithoutWorkspace() throws RemoteException {
+        try {
+            return UserDAOImplementation.getInstance().getUsersWithoutWorkspace();
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException {
+        support.addPropertyChangeListener(listener);
     }
 }

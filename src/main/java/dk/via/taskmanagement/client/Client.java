@@ -4,7 +4,9 @@ import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface Client {
     Workspace createWorkspace(Workspace workspace) throws RemoteException;
@@ -18,4 +20,8 @@ public interface Client {
     User getUserByUsername(String username) throws RemoteException;
 
     User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
+
+    ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
+
+    void addPropertyChangeListener(PropertyChangeListener listener);
 }

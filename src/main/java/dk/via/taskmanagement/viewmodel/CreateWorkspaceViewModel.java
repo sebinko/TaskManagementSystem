@@ -34,7 +34,7 @@ public class CreateWorkspaceViewModel {
             message.set("Name must not be empty");
             return null;
         }
-//
+
         Workspace workspace = model.createWorkspace(new Workspace(name.get()));
         User user = Auth.getInstance().getCurrentUser();
 

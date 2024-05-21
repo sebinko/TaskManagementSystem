@@ -14,6 +14,8 @@ public class ViewFactory {
     public static final String WORKSPACE = "WORKSPACE";
     public static final String CREATE_WORKSPACE = "CREATE_WORKSPACE";
 
+    public static final String MANAGE_WORKSPACE = "MANAGE_WORKSPACE";
+
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -111,6 +113,19 @@ public class ViewFactory {
         }
     }
 
+    public Region loadManageWorkspaceView() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ManageWorkspaceView.fxml"));
+        try {
+            Region root = loader.load();
+            ManageWorkspaceView manageWorkspaceView = loader.getController();
+            manageWorkspaceView.init(viewHandler, viewModelFactory.getManageWorkspaceViewModel(), root);
+            return root;
+        } catch (IOException e) {
+            throw new IOError(e);
+        }
+    }
+
     public Region load(String id) {
         Region root = switch (id) {
             case WELCOME -> loadWelcomeView();
@@ -118,6 +133,7 @@ public class ViewFactory {
             case REGISTER -> loadRegisterView();
             case CREATE_WORKSPACE -> loadCreateWorkspaceView();
             case WORKSPACE -> loadWorkspaceView();
+            case MANAGE_WORKSPACE -> loadManageWorkspaceView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;

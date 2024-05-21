@@ -1,11 +1,13 @@
 package dk.via.taskmanagement.shared;
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface Connector extends Remote {
     Workspace createWorkspace(Workspace workspace) throws RemoteException;
@@ -21,5 +23,7 @@ public interface Connector extends Remote {
 
     User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
+    ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
 
+    void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException;
 }

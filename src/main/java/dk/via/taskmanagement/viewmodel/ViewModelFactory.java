@@ -8,11 +8,14 @@ public class ViewModelFactory {
     private final CreateWorkspaceViewModel createWorkspaceViewModel;
     private final WorkspaceViewModel workspaceViewModel;
 
+    private final ManageWorkspaceViewModel manageWorkspaceViewModel;
+
     public ViewModelFactory(Model model) {
         loginViewModel = new LoginViewModel(model);
         registerViewModel = new RegisterViewModel(model);
         createWorkspaceViewModel = new CreateWorkspaceViewModel(model);
         workspaceViewModel = new WorkspaceViewModel(model);
+        manageWorkspaceViewModel = new ManageWorkspaceViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel() {
@@ -29,5 +32,9 @@ public class ViewModelFactory {
 
     public WorkspaceViewModel getWorkspaceViewModel() {
         return workspaceViewModel;
+    }
+
+    public ManageWorkspaceViewModel getManageWorkspaceViewModel() {
+        return manageWorkspaceViewModel;
     }
 }

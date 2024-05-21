@@ -4,14 +4,22 @@ import dk.via.taskmanagement.client.Client;
 import dk.via.taskmanagement.client.ClientImplementation;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.shared.Connector;
+import javafx.application.Platform;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
-public class ModelManager implements Model {
+public class ModelManager implements Model, PropertyChangeListener {
     private final Client client;
+    private final PropertyChangeSupport support;
 
     public ModelManager(Connector connector) throws RemoteException {
         this.client = new ClientImplementation(connector);
+        this.client.addPropertyChangeListener(this);
+        this.support = new PropertyChangeSupport(this);
     }
 
     @Override
@@ -66,5 +74,35 @@ public class ModelManager implements Model {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ArrayList<User> getUsersWithoutWorkspace() {
+        try {
+            return client.getUsersWithoutWorkspace();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        Platform.runLater(() -> {
+            if (evt.getPropertyName().equals("createWorkspace")) {
+                support.firePropertyChange(new PropertyChangeEvent(this, "createWorkspace", null, evt.getNewValue()));
+            } else if (evt.getPropertyName().equals("addWorkSpaceUser")) {
+                support.firePropertyChange(new PropertyChangeEvent(this, "addWorkSpaceUser", null, evt.getNewValue()));
+            }
+        });
     }
 }

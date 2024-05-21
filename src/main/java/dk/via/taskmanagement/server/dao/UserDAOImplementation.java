@@ -5,6 +5,7 @@ import dk.via.taskmanagement.model.Workspace;
 import org.postgresql.Driver;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserDAOImplementation implements UserDAO {
     private static UserDAOImplementation instance;
@@ -33,7 +34,6 @@ public class UserDAOImplementation implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                // TODO workspace
                 Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
                 return new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), workspace);
             } else {
@@ -58,5 +58,19 @@ public class UserDAOImplementation implements UserDAO {
         return user;
     }
 
+    @Override
+    public ArrayList<User> getUsersWithoutWorkspace() throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE workspace_id IS NULL");
+            ResultSet resultSet = statement.executeQuery();
 
+            ArrayList<User> users = new ArrayList<>();
+
+            while (resultSet.next()) {
+                users.add(new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), null));
+            }
+
+            return users;
+        }
+    }
 }
