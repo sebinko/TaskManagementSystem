@@ -65,6 +65,11 @@ public class ClientImplementation extends UnicastRemoteObject implements Client,
     }
 
     @Override
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException {
+        return connector.getUsersForWorkspace(workspace);
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }

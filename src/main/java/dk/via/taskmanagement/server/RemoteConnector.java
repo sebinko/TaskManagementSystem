@@ -94,6 +94,15 @@ public class RemoteConnector implements Connector {
     }
 
     @Override
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException {
+        try {
+            return UserDAOImplementation.getInstance().getUsersForWorkspace(workspace);
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
     public void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException {
         support.addPropertyChangeListener(listener);
     }

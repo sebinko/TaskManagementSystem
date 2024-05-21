@@ -1,6 +1,7 @@
 package dk.via.taskmanagement.server.dao;
 
 import dk.via.taskmanagement.model.User;
+import dk.via.taskmanagement.model.Workspace;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,5 +14,5 @@ public interface UserDAO {
 
     ArrayList<User> getUsersWithoutWorkspace() throws SQLException;
 
-
+    ArrayList<User> getUsersForWorkspace(Workspace workspace) throws SQLException;
 }

@@ -20,6 +20,10 @@ public class ManageWorkspaceView {
 
     @FXML
     TableView<User> currentUsers;
+    @FXML
+    private TableColumn<User, String> currentUsersIdColumn;
+    @FXML
+    private TableColumn<User, String> currentUsersUsernameColumn;
 
     @FXML
     TableView<User> usersWithoutWorkspace;
@@ -33,6 +37,7 @@ public class ManageWorkspaceView {
 
     private ReadOnlyObjectProperty<User> usersWithoutWorkspaceSelected;
 
+
     @FXML
     Label workspaceName;
 
@@ -41,13 +46,18 @@ public class ManageWorkspaceView {
         this.manageWorkspaceViewModel = manageWorkspaceViewModel;
         this.root = root;
 
+        this.manageWorkspaceViewModel.init();
+
 
         manageWorkspaceViewModel.bindCurrentUsers(currentUsers.itemsProperty());
+        this.currentUsersIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.currentUsersUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
 
         manageWorkspaceViewModel.bindUsersWithoutWorkspace(usersWithoutWorkspace.itemsProperty());
         this.usersWithoutWorkspaceIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         this.usersWithoutWorkspaceUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
         this.usersWithoutWorkspaceSelected = usersWithoutWorkspace.getSelectionModel().selectedItemProperty();
+
         manageWorkspaceViewModel.bindUsersWithoutWorkspaceSelected(usersWithoutWorkspaceSelected);
         manageWorkspaceViewModel.bindUserWithoutWorkspaceSelectedText(userWithoutWorkspaceSelectedLabel.textProperty());
 

@@ -25,5 +25,7 @@ public interface Connector extends Remote {
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
 
+    ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
+
     void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException;
 }

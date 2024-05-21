@@ -28,6 +28,7 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     public ManageWorkspaceViewModel(Model model) {
         this.model = model;
+
         currentUsers = new SimpleListProperty<>(FXCollections.observableArrayList());
         usersWithoutWorkspace = new SimpleListProperty<>(FXCollections.observableArrayList());
         workspaceName = new SimpleStringProperty();
@@ -35,9 +36,14 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
         userWithoutWorkspaceSelectedText = new SimpleStringProperty();
         model.addPropertyChangeListener(this);
 
+    }
 
+    public void init() {
         ArrayList<User> usersWithoutWorkspace = model.getUsersWithoutWorkspace();
         this.usersWithoutWorkspace.addAll(usersWithoutWorkspace);
+
+        ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        this.currentUsers.addAll(usersForWorkspace);
     }
 
     public void bindCurrentUsers(ObjectProperty<ObservableList<User>> property) {
@@ -72,6 +78,10 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("addWorkSpaceUser")) {
+            this.currentUsers.clear();
+            ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+            this.currentUsers.addAll(usersForWorkspace);
+
             this.usersWithoutWorkspace.clear();
             ArrayList<User> usersWithoutWorkspace = model.getUsersWithoutWorkspace();
             this.usersWithoutWorkspace.addAll(usersWithoutWorkspace);
@@ -82,6 +92,6 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
         User user = usersWithoutWorkspaceSelected.get();
         Workspace workspace = Auth.getInstance().getCurrentUser().getWorkspace();
         model.addWorkSpaceUser(workspace, user);
-        usersWithoutWorkspaceSelected.set(null);
+//        usersWithoutWorkspaceSelected.set(null);
     }
 }

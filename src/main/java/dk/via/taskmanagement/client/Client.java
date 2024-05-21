@@ -22,6 +22,7 @@ public interface Client {
     User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
+    ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
 
     void addPropertyChangeListener(PropertyChangeListener listener);
 }

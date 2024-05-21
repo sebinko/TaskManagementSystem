@@ -86,6 +86,15 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) {
+        try {
+            return client.getUsersForWorkspace(workspace);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }

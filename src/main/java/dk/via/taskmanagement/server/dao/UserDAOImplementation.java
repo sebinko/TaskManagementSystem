@@ -73,4 +73,20 @@ public class UserDAOImplementation implements UserDAO {
             return users;
         }
     }
+
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE workspace_id = ?");
+            statement.setInt(1, workspace.getId());
+            ResultSet resultSet = statement.executeQuery();
+
+            ArrayList<User> users = new ArrayList<>();
+
+            while (resultSet.next()) {
+                users.add(new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), workspace));
+            }
+
+            return users;
+        }
+    }
 }

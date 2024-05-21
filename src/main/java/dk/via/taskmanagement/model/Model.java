@@ -19,6 +19,7 @@ public interface Model {
     User authenticateUser(String username, String password) throws AuthenticationException;
 
     ArrayList<User> getUsersWithoutWorkspace();
+    ArrayList<User> getUsersForWorkspace(Workspace workspace);
 
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
