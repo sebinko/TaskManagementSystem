@@ -17,6 +17,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     private final Model model;
 
     StringProperty workspaceName;
+    ArrayList<Task> tasks;
 
     StringProperty taskName;
     StringProperty taskDescription;
@@ -32,6 +33,11 @@ public class WorkspaceViewModel implements PropertyChangeListener {
 
     Task selectedTaskObject = null;
 
+    ListProperty<Task.Priority> checkedFilterPriorities;
+
+    StringProperty nameFilter;
+
+
 
     public WorkspaceViewModel(Model model) {
         this.model = model;
@@ -44,7 +50,9 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         notStartedTasks = new SimpleListProperty<>(FXCollections.observableArrayList());
         inProgressTasks = new SimpleListProperty<>(FXCollections.observableArrayList());
         completedTasks = new SimpleListProperty<>(FXCollections.observableArrayList());
+        checkedFilterPriorities = new SimpleListProperty<>(FXCollections.observableArrayList(Task.Priority.values()));
         selectedTask = new SimpleObjectProperty<>();
+        nameFilter = new SimpleStringProperty();
 
         model.addPropertyChangeListener(this);
 
@@ -59,10 +67,18 @@ public class WorkspaceViewModel implements PropertyChangeListener {
                 selectedTaskObject = newValue;
             }
         });
+
+        checkedFilterPriorities.addListener((observable, oldValue, newValue) -> {
+            filterTasks();
+        });
+
+        nameFilter.addListener((observable, oldValue, newValue) -> {
+            filterTasks();
+        });
     }
 
     public void getTasksForWorkspace() {
-        ArrayList<Task> tasks = model.getTasksForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        tasks = model.getTasksForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
 
         notStartedTasks.clear();
         inProgressTasks.clear();
@@ -125,6 +141,14 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         property.bindBidirectional(selectedTask);
     }
 
+    public void bindCheckedFilterPriorities(ListProperty<Task.Priority> property) {
+        property.bindBidirectional(checkedFilterPriorities);
+    }
+
+    public void bindNameFilter(StringProperty property) {
+        property.bindBidirectional(nameFilter);
+    }
+
     public void createTask() {
         Task task = getTask();
 
@@ -176,5 +200,33 @@ public class WorkspaceViewModel implements PropertyChangeListener {
 
     public void completeTask() {
         model.completeTask(getTask());
+    }
+
+    public void filterTasks() {
+        if(tasks == null) return;
+
+        notStartedTasks.clear();
+        tasks.stream()
+                .filter(task -> task.getState().toString().equals("NotStarted"))
+                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
+                .forEach(notStartedTasks::add);
+
+        inProgressTasks.clear();
+        tasks.stream()
+                .filter(task -> task.getState().toString().equals("InProgress"))
+                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
+                .forEach(inProgressTasks::add);
+
+        completedTasks.clear();
+        tasks.stream()
+                .filter(task -> task.getState().toString().equals("Completed"))
+                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
+                .forEach(completedTasks::add);
+
+        if(nameFilter.getValue() != null && !nameFilter.getValue().isEmpty()) {
+            notStartedTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
+            inProgressTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
+            completedTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
+        }
     }
 }

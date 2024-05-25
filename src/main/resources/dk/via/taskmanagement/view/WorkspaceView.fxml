@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.SegmentedButton?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.via.taskmanagement.view.WorkspaceView">
@@ -31,7 +32,34 @@
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
-                        <TextField />
+                        <HBox>
+                           <children>
+                              <VBox HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Name" />
+                                    <TextField fx:id="nameFilter" />
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox layoutX="10.0" layoutY="10.0">
+                                 <children>
+                                    <Label text="Priority" />
+                                    <CheckComboBox fx:id="priorityFilter" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox layoutX="521.0" layoutY="10.0">
+                                 <children>
+                                    <Label text="Filter" />
+                                  <Button mnemonicParsing="false" text="Button" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

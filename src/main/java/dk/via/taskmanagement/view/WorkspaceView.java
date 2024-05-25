@@ -4,9 +4,12 @@ import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.viewmodel.WorkspaceViewModel;
 import javafx.beans.property.*;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.SegmentedButton;
 
 public class WorkspaceView {
@@ -65,6 +68,14 @@ public class WorkspaceView {
     @FXML
     Button completeButton;
 
+    @FXML
+    TextField nameFilter;
+
+    @FXML
+    CheckComboBox<Task.Priority> priorityFilter;
+
+    ListProperty<Task.Priority> checkedFilterPriorities;
+
     public void init(ViewHandler viewHandler, WorkspaceViewModel workspaceViewModel, Region root) {
         this.viewHandler = viewHandler;
         taskState = new SimpleStringProperty();
@@ -72,6 +83,7 @@ public class WorkspaceView {
         viewModel = workspaceViewModel;
         selectedTask = new SimpleObjectProperty<>();
         isNewTask = new SimpleBooleanProperty();
+        checkedFilterPriorities = new SimpleListProperty<>();
 
         viewModel.bindWorkspaceName(workspaceName.textProperty());
         viewModel.bindTaskName(name.textProperty());
@@ -83,6 +95,8 @@ public class WorkspaceView {
         viewModel.bindInProgressTasks(inProgressTasks.itemsProperty());
         viewModel.bindCompletedTasks(completedTasks.itemsProperty());
         viewModel.bindSelectedTask(selectedTask);
+        viewModel.bindCheckedFilterPriorities(checkedFilterPriorities);
+        viewModel.bindNameFilter(nameFilter.textProperty());
 
         // TODO toto do viewmodelu
         workspaceName.setText(Auth.getInstance().getCurrentUser().getWorkspace().getName());
@@ -97,8 +111,20 @@ public class WorkspaceView {
         initState();
         initSelectedTask();
         initIsNewTask();
+        initPriorityFilter();
 
         workspaceViewModel.getTasksForWorkspace();
+    }
+
+    private void initPriorityFilter() {
+        priorityFilter.getItems().addAll(Task.Priority.values());
+
+        priorityFilter.getCheckModel().getCheckedItems().addListener((ListChangeListener<Task.Priority>) c -> {
+            checkedFilterPriorities.clear();
+            checkedFilterPriorities.addAll(priorityFilter.getCheckModel().getCheckedItems());
+        });
+
+        priorityFilter.getCheckModel().checkAll();
     }
 
     private void initIsNewTask() {
@@ -194,7 +220,6 @@ public class WorkspaceView {
                 }
             }
         });
-
     }
 
     private void initPriority() {
