@@ -1,6 +1,7 @@
 package dk.via.taskmanagement.model;
 
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.exceptions.ValidationException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public interface Model {
 
     ArrayList<User> getUsersForWorkspace(Workspace workspace);
 
-    Task createTask(Task task);
+    Task createTask(Task task) throws ValidationException;
 
-    Task updateTask(Task task);
+    Task updateTask(Task task) throws ValidationException;
 
     Task deleteTask(Task task);
 

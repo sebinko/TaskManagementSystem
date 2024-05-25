@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.viewmodel;
 
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.*;
 import dk.via.taskmanagement.model.builders.TaskBuilder;
 import dk.via.taskmanagement.utilities.Auth;
@@ -12,7 +13,6 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Predicate;
 
 public class WorkspaceViewModel implements PropertyChangeListener {
@@ -43,6 +43,8 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     ListProperty<User> assignedUsers;
     ListProperty<User> availableUsers;
 
+    StringProperty message;
+
 
     public WorkspaceViewModel(Model model) {
         this.model = model;
@@ -61,6 +63,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         assignedUsers = new SimpleListProperty<>(FXCollections.observableArrayList());
         availableUsers = new SimpleListProperty<>(FXCollections.observableArrayList());
         assignedUsersFilter = new SimpleListProperty<>(FXCollections.observableArrayList());
+        message = new SimpleStringProperty();
 
         model.addPropertyChangeListener(this);
 
@@ -190,10 +193,19 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         property.bindBidirectional(assignedUsersFilter);
     }
 
+    public void bindMessage(StringProperty property) {
+        property.bind(message);
+    }
+
     public void createTask() {
         Task task = getTask();
 
-        model.createTask(task);
+        try {
+            model.createTask(task);
+            message.setValue("");
+        } catch (ValidationException e) {
+            message.setValue(e.getMessage());
+        }
     }
 
     @Override
@@ -204,7 +216,12 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     }
 
     public void updateTask() {
-        model.updateTask(getTask());
+        try {
+            model.updateTask(getTask());
+            message.setValue("");
+        } catch (ValidationException e) {
+            message.setValue(e.getMessage());
+        }
     }
 
     private Task getTask() {
@@ -253,30 +270,6 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public synchronized void filterTasks() {
         if (tasks == null) return;
 
-//        Predicate<Task> isAssignedToFilteredUser = task -> {
-//            if (task.getUsers().isEmpty()) {
-//                return false;
-//            } else {
-//                List<User> assignedUsers = assignedUsersFilter.getValue();
-//                if (assignedUsers == null) {
-//                    System.out.println("Assigned users is null");
-//                    return false;
-//                } else {
-//                    return assignedUsers.stream().anyMatch(user -> {
-//                        if (user == null || user.getUserName().equals("NotAssigned")) {
-//                            System.out.println("User is null");
-//                            System.out.println(assignedUsers);
-//                            return false;
-//                        } else {
-//                            System.out.println("User is not null");
-//                            System.out.println(assignedUsers);
-//                            return task.getUsers().stream().anyMatch(taskUser -> taskUser.getId() == user.getId());
-//                        }
-//                    });
-//                }
-//            }
-//        };
-
         Predicate<Task> isAssignedToFilteredUser = task -> assignedUsersFilter.getValue().stream().anyMatch(user -> task.getUsers().stream().anyMatch(taskUser -> taskUser.getId().equals(user.getId())));
         Predicate<Task> isNotAssigned = task -> task.getUsers().isEmpty() && assignedUsersFilter.getValue().stream().anyMatch(user -> user.getUserName().equals("NotAssigned"));
 
@@ -292,7 +285,6 @@ public class WorkspaceViewModel implements PropertyChangeListener {
                 .filter(isAssignedToFilteredUser.or(isNotAssigned))
                 .forEach(task -> {
                     switch (task.getState().toString()) {
-
 
 
                         case "NotStarted":
@@ -329,5 +321,9 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         ret.add(nonExistingUser);
 
         return ret;
+    }
+
+    public void logout() {
+        Auth.getInstance().setCurrentUser(null);
     }
 }

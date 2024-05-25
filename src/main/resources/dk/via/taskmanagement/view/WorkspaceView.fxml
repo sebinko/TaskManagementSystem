@@ -20,11 +20,13 @@
    <children>
       <BorderPane layoutX="153.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <top>
-            <HBox prefHeight="50.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="35.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="manageWorkspaceButton" mnemonicParsing="false" onAction="#openManageWorkspaceView" prefHeight="26.0" prefWidth="172.0" text="Manage Workspace" HBox.hgrow="ALWAYS" />
-                  <Region fx:id="manageWorkspaceRegion" prefHeight="200.0" prefWidth="200.0" />
+                  <Region fx:id="manageWorkspaceRegion" prefHeight="50.0" prefWidth="200.0" />
                   <Label fx:id="workspaceName" prefHeight="17.0" prefWidth="103.0" text="workspaceName" HBox.hgrow="ALWAYS" />
+                  <Region prefHeight="50.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#logout" text="Logout" />
                </children>
             </HBox>
          </top>
@@ -166,6 +168,11 @@
                         <Button fx:id="completeButton" mnemonicParsing="false" onAction="#completeTask" text="Complete Task" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  <Label fx:id="message" textFill="RED">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <Region prefHeight="200.0" prefWidth="200.0" />
                   <HBox>
                      <children>

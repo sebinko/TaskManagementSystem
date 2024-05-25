@@ -3,7 +3,9 @@ package dk.via.taskmanagement.model;
 import dk.via.taskmanagement.client.Client;
 import dk.via.taskmanagement.client.ClientImplementation;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.shared.Connector;
+import dk.via.taskmanagement.validation.TaskValidation;
 import javafx.application.Platform;
 
 import java.beans.PropertyChangeEvent;
@@ -95,8 +97,10 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public synchronized Task createTask(Task task) {
+    public synchronized Task createTask(Task task) throws ValidationException {
         try {
+            TaskValidation.validate(task);
+
             return client.createTask(task);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -104,8 +108,10 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public synchronized Task updateTask(Task task) {
+    public synchronized Task updateTask(Task task) throws ValidationException {
         try {
+            TaskValidation.validate(task);
+
             return client.updateTask(task);
         } catch (RemoteException e) {
             throw new RuntimeException(e);

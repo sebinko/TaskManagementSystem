@@ -39,9 +39,11 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     public void init() {
         ArrayList<User> usersWithoutWorkspace = model.getUsersWithoutWorkspace();
+        this.usersWithoutWorkspace.clear();
         this.usersWithoutWorkspace.addAll(usersWithoutWorkspace);
 
         ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        this.currentUsers.clear();
         this.currentUsers.addAll(usersForWorkspace);
     }
 
@@ -59,10 +61,6 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     public void bindUserWithoutWorkspaceSelectedText(StringProperty property) {
         property.bind(userWithoutWorkspaceSelectedText);
-    }
-
-    public void bindWorkspaceName(StringProperty property) {
-        property.bindBidirectional(workspaceName);
     }
 
     public void onSelect() {

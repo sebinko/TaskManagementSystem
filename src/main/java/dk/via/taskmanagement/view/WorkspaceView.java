@@ -88,6 +88,9 @@ public class WorkspaceView {
 
     ListProperty<User> assignedUsersFilterList;
 
+    @FXML
+    Label message;
+
     public void init(ViewHandler viewHandler, WorkspaceViewModel workspaceViewModel, Region root) {
         this.viewHandler = viewHandler;
         viewModel = workspaceViewModel;
@@ -113,6 +116,7 @@ public class WorkspaceView {
         viewModel.bindAssignedUsers(assignedUsers.targetItemsProperty());
         viewModel.bindAvailableUsers(assignedUsers.sourceItemsProperty());
         viewModel.bindAssignedUsersFilter(assignedUsersFilterList);
+        viewModel.bindMessage(message.textProperty());
 
         // TODO toto do viewmodelu
         workspaceName.setText(Auth.getInstance().getCurrentUser().getWorkspace().getName());
@@ -323,5 +327,11 @@ public class WorkspaceView {
     @FXML
     public void completeTask() {
         viewModel.completeTask();
+    }
+
+    @FXML
+    public void logout() {
+        viewModel.logout();
+        viewHandler.openView(ViewFactory.WELCOME);
     }
 }
