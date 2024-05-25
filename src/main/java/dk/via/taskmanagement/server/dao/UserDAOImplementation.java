@@ -22,7 +22,7 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=task_management_system", "postgres", "1848");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=task_management_system", "postgres", "");
     }
 
     @Override
@@ -46,14 +46,17 @@ public class UserDAOImplementation implements UserDAO {
     @Override
     public User create(User user) throws SQLException {
         try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, password, role) VALUES (?, ?, ?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (name, password, role) VALUES (?, ?, ?) returning user_id");
             statement.setString(1, user.getUserName());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getRole());
-            statement.executeUpdate();
-        }
 
-        user = getByUsername(user.getUserName());
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
+            }
+        }
 
         return user;
     }

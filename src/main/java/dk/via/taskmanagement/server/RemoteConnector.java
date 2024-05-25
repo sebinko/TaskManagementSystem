@@ -3,8 +3,10 @@ package dk.via.taskmanagement.server;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
+import dk.via.taskmanagement.server.dao.TaskDaoImplementation;
 import dk.via.taskmanagement.server.dao.UserDAOImplementation;
 import dk.via.taskmanagement.server.dao.WorkspaceDAOImplementation;
 import dk.via.taskmanagement.shared.Connector;
@@ -97,6 +99,81 @@ public class RemoteConnector implements Connector {
     public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException {
         try {
             return UserDAOImplementation.getInstance().getUsersForWorkspace(workspace);
+        } catch (SQLException e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Task createTask(Task task) throws RemoteException {
+        try {
+            TaskDaoImplementation.getInstance().createTask(task);
+
+            support.firePropertyChange("updateTasks", null, task);
+
+            return task;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public Task updateTask(Task task) throws RemoteException {
+        try {
+            TaskDaoImplementation.getInstance().updateTask(task);
+
+            support.firePropertyChange("updateTasks", null, task);
+
+            return task;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Task deleteTask(Task task) throws RemoteException {
+        try {
+            TaskDaoImplementation.getInstance().deleteTask(task);
+
+            support.firePropertyChange("updateTasks", null, task);
+
+            return task;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Task startTask(Task task) throws RemoteException {
+        try {
+            TaskDaoImplementation.getInstance().updateTaskState(task);
+
+            support.firePropertyChange("updateTasks", null, task);
+
+            return task;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Task completeTask(Task task) throws RemoteException {
+        try {
+            TaskDaoImplementation.getInstance().updateTaskState(task);
+
+            support.firePropertyChange("updateTasks", null, task);
+
+            return task;
+        } catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException {
+        try {
+            return TaskDaoImplementation.getInstance().getTasksForWorkspace(workspace);
         } catch (SQLException e) {
             throw new RemoteException(e.getMessage());
         }

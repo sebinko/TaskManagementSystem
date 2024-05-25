@@ -23,7 +23,7 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public Workspace createWorkspace(Workspace workspace) {
+    public synchronized Workspace createWorkspace(Workspace workspace) {
         try {
             return client.createWorkspace(workspace);
         } catch (RemoteException e) {
@@ -41,7 +41,7 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public void addWorkSpaceUser(Workspace workspace, User newUser) {
+    public synchronized void addWorkSpaceUser(Workspace workspace, User newUser) {
         try {
             client.addWorkSpaceUser(workspace, newUser);
         } catch (RemoteException e) {
@@ -50,7 +50,7 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public User createUser(User user) {
+    public synchronized User createUser(User user) {
         try {
             return client.createUser(user);
         } catch (RemoteException e) {
@@ -68,7 +68,7 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public User authenticateUser(String username, String password) throws AuthenticationException {
+    public synchronized User authenticateUser(String username, String password) throws AuthenticationException {
         try {
             return client.authenticateUser(username, password);
         } catch (RemoteException e) {
@@ -95,6 +95,64 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
+    public synchronized Task createTask(Task task) {
+        try {
+            return client.createTask(task);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized Task updateTask(Task task) {
+        try {
+            return client.updateTask(task);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized Task deleteTask(Task task) {
+        try {
+            return client.deleteTask(task);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized Task startTask(Task task) {
+        try {
+            task.startTask();
+
+            return client.startTask(task);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public synchronized Task completeTask(Task task) {
+        try {
+            task.completeTask();
+            
+            return client.completeTask(task);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) {
+        try {
+            return client.getTasksForWorkspace(workspace);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
@@ -111,6 +169,8 @@ public class ModelManager implements Model, PropertyChangeListener {
                 support.firePropertyChange(new PropertyChangeEvent(this, "createWorkspace", null, evt.getNewValue()));
             } else if (evt.getPropertyName().equals("addWorkSpaceUser")) {
                 support.firePropertyChange(new PropertyChangeEvent(this, "addWorkSpaceUser", null, evt.getNewValue()));
+            } else if (evt.getPropertyName().equals("updateTasks")) {
+                support.firePropertyChange(new PropertyChangeEvent(this, "updateTasks", null, evt.getNewValue()));
             }
         });
     }

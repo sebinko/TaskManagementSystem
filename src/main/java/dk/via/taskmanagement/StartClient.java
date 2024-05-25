@@ -29,16 +29,6 @@ public class StartClient extends Application {
         } catch (RemoteException e) {
             displayCouldNotConnectToServerAlert();
         }
-//
-//        System.out.println(model.getWorkspace(null));
-//
-//        WorkspaceUserList workspaceUserList = new WorkspaceUserList();
-//        Workspace workspace = new Workspace("Workspace 2", workspaceUserList);
-//
-//        System.out.println(model.createWorkspace(workspace));
-//
-//        System.out.println(model.getWorkspace(null));
-
     }
 
     private void displayCouldNotConnectToServerAlert() {

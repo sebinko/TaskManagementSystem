@@ -1,6 +1,7 @@
 package dk.via.taskmanagement.client;
 
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 
@@ -23,6 +24,22 @@ public interface Client {
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
     ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
+
+    /*
+    TASKS
+     */
+
+    Task createTask(Task task) throws RemoteException;
+    Task updateTask(Task task) throws RemoteException;
+    Task deleteTask(Task task) throws RemoteException;
+    Task startTask(Task task) throws RemoteException;
+    Task completeTask(Task task) throws RemoteException;
+
+    ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException;
+
+    /*
+    PROPERTY CHANGE LISTENER
+     */
 
     void addPropertyChangeListener(PropertyChangeListener listener);
 }

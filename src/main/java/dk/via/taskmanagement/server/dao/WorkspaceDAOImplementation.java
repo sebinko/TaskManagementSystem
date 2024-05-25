@@ -21,21 +21,23 @@ public class WorkspaceDAOImplementation implements WorkspaceDAO {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=task_management_system", "postgres", "1848");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=task_management_system", "postgres", "");
     }
 
     @Override
     public Workspace createWorkspace(Workspace workspace) throws SQLException {
         try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO workspaces (name) VALUES (?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO workspaces (name) VALUES (?) returning workspace_id");
             statement.setString(1, workspace.getName());
-            statement.executeUpdate();
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                workspace.setId(resultSet.getInt(1));
+            }
+
+            return workspace;
         }
-
-        workspace = getByName(workspace.getName());
-
-        return workspace;
-
     }
 
     public Workspace getByName(String name) throws SQLException {

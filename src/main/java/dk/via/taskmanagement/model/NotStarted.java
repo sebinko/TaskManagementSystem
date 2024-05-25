@@ -1,14 +1,20 @@
 package dk.via.taskmanagement.model;
 
-public class NotStarted implements TaskState
-{
-  @Override public void startTask(Task task)
-  {
-    task.setTaskState(new InProgress());
-  }
+import java.io.Serializable;
 
-  @Override public void finnishTask(Task task)
-  {
-    task.setTaskState(new Completed());
-  }
+public class NotStarted implements TaskState, Serializable {
+    @Override
+    public void startTask(Task task) {
+        task.setState(new InProgress());
+    }
+
+    @Override
+    public void finnishTask(Task task) {
+        task.setState(new Completed());
+    }
+
+    @Override
+    public String toString() {
+        return "NotStarted";
+    }
 }

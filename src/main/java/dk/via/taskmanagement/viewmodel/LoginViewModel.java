@@ -21,8 +21,8 @@ public class LoginViewModel {
         password = new SimpleStringProperty();
         message = new SimpleStringProperty();
 
-        username.set("tupac1234");
-        password.set("heslo1234");
+        username.set("milan444");
+        password.set("heslo123");
     }
 
     public void bindUsername(StringProperty property) {

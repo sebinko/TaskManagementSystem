@@ -1,14 +1,21 @@
 package dk.via.taskmanagement.model;
 
-public class Completed implements TaskState
+import java.io.Serializable;
+
+public class Completed implements TaskState, Serializable
 {
   @Override public void startTask(Task task)
   {
-    task.setTaskState(new InProgress());
+    task.setState(new InProgress());
   }
 
   @Override public void finnishTask(Task task)
   {
-    task.setTaskState(this);
+    task.setState(this);
   }
+
+    @Override public String toString()
+    {
+        return "Completed";
+    }
 }

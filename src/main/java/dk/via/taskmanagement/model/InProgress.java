@@ -1,14 +1,21 @@
 package dk.via.taskmanagement.model;
 
-public class InProgress implements TaskState
+import java.io.Serializable;
+
+public class InProgress implements TaskState, Serializable
 {
   @Override public void startTask(Task task)
   {
-    task.setTaskState(this);
+    task.setState(this);
   }
 
   @Override public void finnishTask(Task task)
   {
-    task.setTaskState(new Completed());
+    task.setState(new Completed());
   }
+
+    @Override public String toString()
+    {
+        return "InProgress";
+    }
 }

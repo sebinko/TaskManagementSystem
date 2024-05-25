@@ -3,7 +3,7 @@ package dk.via.taskmanagement.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private final Integer id;
+    private Integer id;
     private String userName;
     private String password;
     private String role;
@@ -31,6 +31,10 @@ public class User implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setUserName(String userName) {

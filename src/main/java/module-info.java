@@ -6,6 +6,7 @@ module dk.via.taskmanagement {
     requires java.desktop;
     requires java.sql;
     requires remoteobserver;
+    requires org.controlsfx.controls;
 
     opens dk.via.taskmanagement to javafx.fxml;
     opens dk.via.taskmanagement.view to javafx.fxml;

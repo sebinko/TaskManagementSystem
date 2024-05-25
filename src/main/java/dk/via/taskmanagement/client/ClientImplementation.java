@@ -3,6 +3,7 @@ package dk.via.taskmanagement.client;
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 import dk.via.taskmanagement.shared.Connector;
@@ -70,6 +71,36 @@ public class ClientImplementation extends UnicastRemoteObject implements Client,
     }
 
     @Override
+    public Task createTask(Task task) throws RemoteException {
+        return connector.createTask(task);
+    }
+
+    @Override
+    public Task updateTask(Task task) throws RemoteException {
+        return connector.updateTask(task);
+    }
+
+    @Override
+    public Task deleteTask(Task task) throws RemoteException {
+        return connector.deleteTask(task);
+    }
+
+    @Override
+    public Task startTask(Task task) throws RemoteException {
+        return connector.startTask(task);
+    }
+
+    @Override
+    public Task completeTask(Task task) throws RemoteException {
+        return connector.completeTask(task);
+    }
+
+    @Override
+    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException {
+        return connector.getTasksForWorkspace(workspace);
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
@@ -81,8 +112,9 @@ public class ClientImplementation extends UnicastRemoteObject implements Client,
                 propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, "createWorkspace", null, remotePropertyChangeEvent.getNewValue()));
             } else if (remotePropertyChangeEvent.getPropertyName().equals("addWorkSpaceUser")) {
                 propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, "addWorkSpaceUser", null, remotePropertyChangeEvent.getNewValue()));
+            } else if (remotePropertyChangeEvent.getPropertyName().equals("updateTasks")) {
+                propertyChangeSupport.firePropertyChange(new PropertyChangeEvent(this, "updateTasks", null, remotePropertyChangeEvent.getNewValue()));
             }
         });
-
     }
 }

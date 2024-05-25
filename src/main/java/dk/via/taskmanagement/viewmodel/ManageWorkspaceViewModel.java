@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class ManageWorkspaceViewModel implements PropertyChangeListener {
     private final Model model;
 
-
     StringProperty workspaceName;
 
     ListProperty<User> currentUsers;
@@ -78,6 +77,10 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("addWorkSpaceUser")) {
+            if (Auth.getInstance().getCurrentUser() == null) {
+                return;
+            }
+
             this.currentUsers.clear();
             ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
             this.currentUsers.addAll(usersForWorkspace);

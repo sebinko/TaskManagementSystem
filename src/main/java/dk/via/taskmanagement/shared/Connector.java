@@ -2,6 +2,7 @@ package dk.via.taskmanagement.shared;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
 
@@ -26,6 +27,23 @@ public interface Connector extends Remote {
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
 
     ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
+    
+    /*
+    TASKS
+     */
 
+
+    Task createTask(Task task) throws RemoteException;
+    Task updateTask(Task task) throws RemoteException;
+    Task deleteTask(Task task) throws RemoteException;
+    Task startTask(Task task) throws RemoteException;
+    Task completeTask(Task task) throws RemoteException;
+
+    ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException;
+
+    /*
+    PROPERTY CHANGE LISTENER
+     */
+    
     void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException;
 }
