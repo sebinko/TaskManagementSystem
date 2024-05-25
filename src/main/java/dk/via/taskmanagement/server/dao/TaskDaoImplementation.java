@@ -1,17 +1,12 @@
 package dk.via.taskmanagement.server.dao;
 
-import dk.via.taskmanagement.model.NotStarted;
-import dk.via.taskmanagement.model.InProgress;
-import dk.via.taskmanagement.model.Completed;
-import dk.via.taskmanagement.model.Task;
-import dk.via.taskmanagement.model.TaskState;
-import dk.via.taskmanagement.model.Workspace;
+import dk.via.taskmanagement.model.*;
 import dk.via.taskmanagement.model.builders.TaskBuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class TaskDaoImplementation implements TaskDao{
+public class TaskDaoImplementation implements TaskDao {
     private static TaskDaoImplementation instance;
 
     private TaskDaoImplementation() {
@@ -30,7 +25,7 @@ public class TaskDaoImplementation implements TaskDao{
 
     @Override
     public Task createTask(Task task) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement insertTask = connection.prepareStatement("INSERT INTO tasks (name, description, deadline, workspace_id) VALUES (?, ?, ?, ?) returning task_id");
             insertTask.setString(1, task.getName());
             insertTask.setString(2, task.getDescription());
@@ -63,7 +58,7 @@ public class TaskDaoImplementation implements TaskDao{
 
     @Override
     public Task updateTask(Task task) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try (Connection connection = getConnection()) {
             // the same as createTask, but with an update statement
             PreparedStatement updateTask = connection.prepareStatement("UPDATE tasks SET name = ?, description = ?, deadline = ? WHERE task_id = ?");
             updateTask.setString(1, task.getName());
@@ -87,7 +82,7 @@ public class TaskDaoImplementation implements TaskDao{
 
     @Override
     public Task deleteTask(Task task) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement deleteTaskPriority = connection.prepareStatement("DELETE FROM task_priorities WHERE task_id = ?");
             deleteTaskPriority.setInt(1, task.getId());
             deleteTaskPriority.executeUpdate();
@@ -106,7 +101,7 @@ public class TaskDaoImplementation implements TaskDao{
 
     @Override
     public Task updateTaskState(Task task) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement updateTaskState = connection.prepareStatement("UPDATE task_states SET task_state = ? WHERE task_id = ?");
             updateTaskState.setString(1, task.getState().toString());
             updateTaskState.setInt(2, task.getId());
@@ -120,7 +115,7 @@ public class TaskDaoImplementation implements TaskDao{
 
     @Override
     public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws SQLException {
-        try(Connection connection = getConnection()) {
+        try (Connection connection = getConnection()) {
             PreparedStatement getTasks = connection.prepareStatement("SELECT tasks.*, tp.task_priority, ts.task_state FROM tasks JOIN task_priorities tp ON tasks.task_id = tp.task_id JOIN task_states ts ON tasks.task_id = ts.task_id WHERE tasks.workspace_id = ?");
 
             getTasks.setInt(1, workspace.getId());
@@ -136,7 +131,8 @@ public class TaskDaoImplementation implements TaskDao{
                     case "NotStarted" -> new NotStarted();
                     case "InProgress" -> new InProgress();
                     case "Completed" -> new Completed();
-                    default -> throw new IllegalStateException("Unexpected value: " + resultSet.getString("task_state"));
+                    default ->
+                            throw new IllegalStateException("Unexpected value: " + resultSet.getString("task_state"));
                 };
 
                 taskBuilder.setId(resultSet.getInt("task_id"))

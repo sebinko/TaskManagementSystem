@@ -34,9 +34,13 @@ public interface Connector extends Remote {
 
 
     Task createTask(Task task) throws RemoteException;
+
     Task updateTask(Task task) throws RemoteException;
+
     Task deleteTask(Task task) throws RemoteException;
+
     Task startTask(Task task) throws RemoteException;
+
     Task completeTask(Task task) throws RemoteException;
 
     ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException;
@@ -44,6 +48,6 @@ public interface Connector extends Remote {
     /*
     PROPERTY CHANGE LISTENER
      */
-    
+
     void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException;
 }

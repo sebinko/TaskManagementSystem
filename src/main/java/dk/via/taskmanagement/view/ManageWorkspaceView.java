@@ -61,7 +61,6 @@ public class ManageWorkspaceView {
         manageWorkspaceViewModel.bindUsersWithoutWorkspaceSelected(usersWithoutWorkspaceSelected);
         manageWorkspaceViewModel.bindUserWithoutWorkspaceSelectedText(userWithoutWorkspaceSelectedLabel.textProperty());
 
-        // TODO toto do viewmodelu
         workspaceName.setText(Auth.getInstance().getCurrentUser().getWorkspace().getName());
     }
 
@@ -71,5 +70,9 @@ public class ManageWorkspaceView {
 
     public void addUserToWorkspace() {
         manageWorkspaceViewModel.addUserToWorkspace();
+    }
+
+    public void openWorkspaceView() {
+        viewHandler.openView(ViewFactory.WORKSPACE);
     }
 }

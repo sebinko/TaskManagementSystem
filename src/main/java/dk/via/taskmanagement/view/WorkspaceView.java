@@ -246,17 +246,17 @@ public class WorkspaceView {
     public void createTask() {
         isNewTask.set(true);
     }
-    
+
     @FXML
     public void deleteTask() {
         viewModel.deleteTask();
     }
-    
+
     @FXML
     public void startTask() {
         viewModel.startTask();
     }
-    
+
     @FXML
     public void completeTask() {
         viewModel.completeTask();

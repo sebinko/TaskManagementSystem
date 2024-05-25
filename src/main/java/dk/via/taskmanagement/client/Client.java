@@ -23,6 +23,7 @@ public interface Client {
     User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
+
     ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
 
     /*
@@ -30,9 +31,13 @@ public interface Client {
      */
 
     Task createTask(Task task) throws RemoteException;
+
     Task updateTask(Task task) throws RemoteException;
+
     Task deleteTask(Task task) throws RemoteException;
+
     Task startTask(Task task) throws RemoteException;
+
     Task completeTask(Task task) throws RemoteException;
 
     ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException;

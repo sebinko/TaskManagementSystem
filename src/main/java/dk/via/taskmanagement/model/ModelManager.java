@@ -136,7 +136,7 @@ public class ModelManager implements Model, PropertyChangeListener {
     public synchronized Task completeTask(Task task) {
         try {
             task.completeTask();
-            
+
             return client.completeTask(task);
         } catch (RemoteException e) {
             throw new RuntimeException(e);

@@ -8,18 +8,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dk.via.taskmanagement.view.ManageWorkspaceView">
    <children>
       <BorderPane layoutX="153.0" layoutY="77.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <top>
-            <Label fx:id="workspaceName" text="workspaceName" BorderPane.alignment="CENTER" />
+            <HBox BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#openWorkspaceView" text="Back" />
+                  <Region prefHeight="30.0" prefWidth="200.0" />
+                  <Label fx:id="workspaceName" text="workspaceName" />
+               </children>
+            </HBox>
          </top>
          <center>
             <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox>
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Current Users" />
                         <TableView fx:id="currentUsers" prefHeight="200.0" prefWidth="200.0">
@@ -33,7 +40,7 @@
                         <Insets right="50.0" />
                      </padding>
                   </VBox>
-                  <VBox layoutX="10.0" layoutY="10.0">
+                  <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="Available Users" />
                         <TableView fx:id="usersWithoutWorkspace" onMouseClicked="#onSelect" prefHeight="200.0" prefWidth="200.0">

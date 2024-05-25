@@ -67,7 +67,7 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     public void onSelect() {
         if (usersWithoutWorkspaceSelected.get() != null) {
-            userWithoutWorkspaceSelectedText.set("Selected: "+usersWithoutWorkspaceSelected.get().getUserName());
+            userWithoutWorkspaceSelectedText.set("Selected: " + usersWithoutWorkspaceSelected.get().getUserName());
         } else {
             userWithoutWorkspaceSelectedText.set("Selected: ");
         }
