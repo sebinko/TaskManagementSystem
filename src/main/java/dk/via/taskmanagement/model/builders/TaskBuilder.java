@@ -2,9 +2,12 @@ package dk.via.taskmanagement.model.builders;
 
 import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.TaskState;
+import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
+import javafx.beans.property.ListProperty;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class TaskBuilder {
     private Integer id;
@@ -14,6 +17,7 @@ public class TaskBuilder {
     private TaskState state;
     private LocalDate deadline;
     private Workspace workspace;
+    private ArrayList<User> users;
 
     public TaskBuilder setId(Integer id) {
         this.id = id;
@@ -59,6 +63,13 @@ public class TaskBuilder {
         task.setState(this.state);
         task.setDeadline(this.deadline);
         task.setWorkspace(this.workspace);
+        task.setUsers(this.users);
+
         return task;
+    }
+
+    public TaskBuilder setUsers(ArrayList<User> assignedUsers) {
+        users= assignedUsers;
+        return this;
     }
 }

@@ -12,6 +12,8 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class WorkspaceViewModel implements PropertyChangeListener {
     private final Model model;
@@ -34,9 +36,12 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     Task selectedTaskObject = null;
 
     ListProperty<Task.Priority> checkedFilterPriorities;
+    ListProperty<User> assignedUsersFilter;
 
     StringProperty nameFilter;
 
+    ListProperty<User> assignedUsers;
+    ListProperty<User> availableUsers;
 
 
     public WorkspaceViewModel(Model model) {
@@ -53,6 +58,9 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         checkedFilterPriorities = new SimpleListProperty<>(FXCollections.observableArrayList(Task.Priority.values()));
         selectedTask = new SimpleObjectProperty<>();
         nameFilter = new SimpleStringProperty();
+        assignedUsers = new SimpleListProperty<>(FXCollections.observableArrayList());
+        availableUsers = new SimpleListProperty<>(FXCollections.observableArrayList());
+        assignedUsersFilter = new SimpleListProperty<>(FXCollections.observableArrayList());
 
         model.addPropertyChangeListener(this);
 
@@ -65,6 +73,8 @@ public class WorkspaceViewModel implements PropertyChangeListener {
                 taskDeadline.setValue(newValue.getDeadline());
 
                 selectedTaskObject = newValue;
+
+                fetchAvailableUsers(newValue);
             }
         });
 
@@ -72,9 +82,36 @@ public class WorkspaceViewModel implements PropertyChangeListener {
             filterTasks();
         });
 
+        assignedUsersFilter.addListener((observable, oldValue, newValue) -> {
+            filterTasks();
+        });
+
         nameFilter.addListener((observable, oldValue, newValue) -> {
             filterTasks();
         });
+    }
+
+    public void fetchAvailableUsers(Task task) {
+        if (task == null) {
+            availableUsers.clear();
+            assignedUsers.clear();
+
+            ArrayList<User> users = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+            availableUsers.addAll(users);
+        } else {
+            availableUsers.clear();
+            assignedUsers.clear();
+
+            ArrayList<User> usersForTask = task.getUsers();
+            ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+
+            ArrayList<User> users = new ArrayList<>(usersForWorkspace);
+            users.removeIf(user -> usersForTask.stream().anyMatch(userForTask -> userForTask.getId().equals(user.getId())));
+
+
+            availableUsers.addAll(users);
+            assignedUsers.addAll(usersForTask);
+        }
     }
 
     public void getTasksForWorkspace() {
@@ -149,6 +186,10 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         property.bindBidirectional(nameFilter);
     }
 
+    public void bindAssignedUsersFilter(ListProperty<User> property) {
+        property.bindBidirectional(assignedUsersFilter);
+    }
+
     public void createTask() {
         Task task = getTask();
 
@@ -179,13 +220,20 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         Workspace workspace = Auth.getInstance().getCurrentUser().getWorkspace();
 
         taskBuilder
-                .setId(selectedTask.getValue().getId())
                 .setName(taskName.getValue())
                 .setDescription(taskDescription.getValue())
                 .setPriority(Task.Priority.valueOf(taskPriority.getValue()))
                 .setState(state)
                 .setDeadline(taskDeadline.getValue())
                 .setWorkspace(workspace);
+
+        if (selectedTaskObject != null) {
+            taskBuilder.setId(selectedTaskObject.getId());
+        }
+
+        ArrayList<User> users = new ArrayList<>(assignedUsers.getValue());
+
+        taskBuilder.setUsers(users);
 
         return taskBuilder.build();
     }
@@ -202,31 +250,84 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         model.completeTask(getTask());
     }
 
-    public void filterTasks() {
-        if(tasks == null) return;
+    public synchronized void filterTasks() {
+        if (tasks == null) return;
+
+//        Predicate<Task> isAssignedToFilteredUser = task -> {
+//            if (task.getUsers().isEmpty()) {
+//                return false;
+//            } else {
+//                List<User> assignedUsers = assignedUsersFilter.getValue();
+//                if (assignedUsers == null) {
+//                    System.out.println("Assigned users is null");
+//                    return false;
+//                } else {
+//                    return assignedUsers.stream().anyMatch(user -> {
+//                        if (user == null || user.getUserName().equals("NotAssigned")) {
+//                            System.out.println("User is null");
+//                            System.out.println(assignedUsers);
+//                            return false;
+//                        } else {
+//                            System.out.println("User is not null");
+//                            System.out.println(assignedUsers);
+//                            return task.getUsers().stream().anyMatch(taskUser -> taskUser.getId() == user.getId());
+//                        }
+//                    });
+//                }
+//            }
+//        };
+
+        Predicate<Task> isAssignedToFilteredUser = task -> assignedUsersFilter.getValue().stream().anyMatch(user -> task.getUsers().stream().anyMatch(taskUser -> taskUser.getId().equals(user.getId())));
+        Predicate<Task> isNotAssigned = task -> task.getUsers().isEmpty() && assignedUsersFilter.getValue().stream().anyMatch(user -> user.getUserName().equals("NotAssigned"));
+
 
         notStartedTasks.clear();
-        tasks.stream()
-                .filter(task -> task.getState().toString().equals("NotStarted"))
-                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
-                .forEach(notStartedTasks::add);
-
         inProgressTasks.clear();
-        tasks.stream()
-                .filter(task -> task.getState().toString().equals("InProgress"))
-                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
-                .forEach(inProgressTasks::add);
-
         completedTasks.clear();
-        tasks.stream()
-                .filter(task -> task.getState().toString().equals("Completed"))
-                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
-                .forEach(completedTasks::add);
 
-        if(nameFilter.getValue() != null && !nameFilter.getValue().isEmpty()) {
+        System.out.println(tasks.size());
+        tasks.stream()
+                .sorted(Comparator.comparing((Task task) -> task.getPriority().ordinal()).reversed())
+                .filter(task -> checkedFilterPriorities.getValue().contains(task.getPriority()))
+                .filter(isAssignedToFilteredUser.or(isNotAssigned))
+                .forEach(task -> {
+                    switch (task.getState().toString()) {
+
+
+
+                        case "NotStarted":
+                            notStartedTasks.add(task);
+                            break;
+                        case "InProgress":
+                            inProgressTasks.add(task);
+                            break;
+                        case "Completed":
+                            completedTasks.add(task);
+                            break;
+                    }
+                });
+
+        if (nameFilter.getValue() != null && !nameFilter.getValue().isEmpty()) {
             notStartedTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
             inProgressTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
             completedTasks.removeIf(task -> !task.getName().toLowerCase().contains(nameFilter.getValue().toLowerCase()));
         }
+    }
+
+    public void bindAssignedUsers(ObjectProperty<ObservableList<User>> targetItems) {
+        assignedUsers.bindBidirectional(targetItems);
+    }
+
+    public void bindAvailableUsers(ObjectProperty<ObservableList<User>> targetItems) {
+        availableUsers.bindBidirectional(targetItems);
+    }
+
+    public ArrayList<User> getAvailableUsers() {
+        ArrayList<User> ret = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+
+        User nonExistingUser = new User("NotAssigned", "", "", null);
+        ret.add(nonExistingUser);
+
+        return ret;
     }
 }

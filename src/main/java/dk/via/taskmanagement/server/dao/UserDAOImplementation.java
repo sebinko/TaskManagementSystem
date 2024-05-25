@@ -92,4 +92,22 @@ public class UserDAOImplementation implements UserDAO {
             return users;
         }
     }
+
+    @Override
+    public User getById(int userId) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Workspace workspace = WorkspaceDAOImplementation.getInstance().getById(resultSet.getInt(5));
+                return new User(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), workspace);
+            } else {
+                return null;
+            }
+
+        }
+    }
 }

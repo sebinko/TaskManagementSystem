@@ -29,7 +29,7 @@ public class User implements Serializable {
         return userName;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -59,5 +59,10 @@ public class User implements Serializable {
 
     public Workspace getWorkspace() {
         return workspace;
+    }
+
+    @Override
+    public String toString() {
+        return userName;
     }
 }

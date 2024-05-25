@@ -52,6 +52,13 @@ public class TaskDaoImplementation implements TaskDao {
 
             insertTaskPriority.executeUpdate();
 
+            for (User user : task.getUsers()) {
+                PreparedStatement insertTaskAssignee = connection.prepareStatement("INSERT INTO task_asignee (user_id, task_id) VALUES (?, ?)");
+                insertTaskAssignee.setInt(1, user.getId());
+                insertTaskAssignee.setInt(2, task.getId());
+                insertTaskAssignee.executeUpdate();
+            }
+
             return task;
         }
     }
@@ -59,7 +66,6 @@ public class TaskDaoImplementation implements TaskDao {
     @Override
     public Task updateTask(Task task) throws SQLException {
         try (Connection connection = getConnection()) {
-            // the same as createTask, but with an update statement
             PreparedStatement updateTask = connection.prepareStatement("UPDATE tasks SET name = ?, description = ?, deadline = ? WHERE task_id = ?");
             updateTask.setString(1, task.getName());
             updateTask.setString(2, task.getDescription());
@@ -75,6 +81,17 @@ public class TaskDaoImplementation implements TaskDao {
 
             updateTaskPriority.executeUpdate();
 
+            // update users
+            PreparedStatement deleteTaskAssignee = connection.prepareStatement("DELETE FROM task_asignee WHERE task_id = ?");
+            deleteTaskAssignee.setInt(1, task.getId());
+            deleteTaskAssignee.executeUpdate();
+
+            for (User user : task.getUsers()) {
+                PreparedStatement insertTaskAssignee = connection.prepareStatement("INSERT INTO task_asignee (user_id, task_id) VALUES (?, ?)");
+                insertTaskAssignee.setInt(1, user.getId());
+                insertTaskAssignee.setInt(2, task.getId());
+                insertTaskAssignee.executeUpdate();
+            }
 
             return task;
         }
@@ -90,6 +107,10 @@ public class TaskDaoImplementation implements TaskDao {
             PreparedStatement deleteTaskState = connection.prepareStatement("DELETE FROM task_states WHERE task_id = ?");
             deleteTaskState.setInt(1, task.getId());
             deleteTaskState.executeUpdate();
+
+            PreparedStatement deleteTaskAssignee = connection.prepareStatement("DELETE FROM task_asignee WHERE task_id = ?");
+            deleteTaskAssignee.setInt(1, task.getId());
+            deleteTaskAssignee.executeUpdate();
 
             PreparedStatement deleteTask = connection.prepareStatement("DELETE FROM tasks WHERE task_id = ?");
             deleteTask.setInt(1, task.getId());
@@ -135,13 +156,23 @@ public class TaskDaoImplementation implements TaskDao {
                             throw new IllegalStateException("Unexpected value: " + resultSet.getString("task_state"));
                 };
 
+                ArrayList<User> users = new ArrayList<>();
+                PreparedStatement getTaskAssignees = connection.prepareStatement("SELECT * FROM task_asignee WHERE task_id = ?");
+                getTaskAssignees.setInt(1, resultSet.getInt("task_id"));
+                ResultSet taskAssignees = getTaskAssignees.executeQuery();
+
+                while (taskAssignees.next()) {
+                    users.add(UserDAOImplementation.getInstance().getById(taskAssignees.getInt("user_id")));
+                }
+
                 taskBuilder.setId(resultSet.getInt("task_id"))
                         .setName(resultSet.getString("name"))
                         .setDescription(resultSet.getString("description"))
                         .setDeadline(resultSet.getDate("deadline").toLocalDate())
                         .setPriority(Task.Priority.valueOf(resultSet.getString("task_priority")))
                         .setState(taskState)
-                        .setWorkspace(workspace);
+                        .setWorkspace(workspace)
+                        .setUsers(users);
 
 
                 tasks.add(taskBuilder.build());

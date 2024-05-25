@@ -15,4 +15,6 @@ public interface UserDAO {
     ArrayList<User> getUsersWithoutWorkspace() throws SQLException;
 
     ArrayList<User> getUsersForWorkspace(Workspace workspace) throws SQLException;
+
+    User getById(int userId) throws SQLException;
 }

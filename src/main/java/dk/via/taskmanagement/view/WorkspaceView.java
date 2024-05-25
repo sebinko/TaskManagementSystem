@@ -1,6 +1,7 @@
 package dk.via.taskmanagement.view;
 
 import dk.via.taskmanagement.model.Task;
+import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.viewmodel.WorkspaceViewModel;
 import javafx.beans.property.*;
@@ -10,7 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.ListSelectionView;
 import org.controlsfx.control.SegmentedButton;
+
+import java.util.ArrayList;
 
 public class WorkspaceView {
     private ViewHandler viewHandler;
@@ -76,14 +80,23 @@ public class WorkspaceView {
 
     ListProperty<Task.Priority> checkedFilterPriorities;
 
+    @FXML
+    ListSelectionView<User> assignedUsers;
+
+    @FXML
+    CheckComboBox<User> assignedUsersFilter;
+
+    ListProperty<User> assignedUsersFilterList;
+
     public void init(ViewHandler viewHandler, WorkspaceViewModel workspaceViewModel, Region root) {
         this.viewHandler = viewHandler;
+        viewModel = workspaceViewModel;
         taskState = new SimpleStringProperty();
         taskPriority = new SimpleStringProperty();
-        viewModel = workspaceViewModel;
         selectedTask = new SimpleObjectProperty<>();
         isNewTask = new SimpleBooleanProperty();
         checkedFilterPriorities = new SimpleListProperty<>();
+        assignedUsersFilterList = new SimpleListProperty<>();
 
         viewModel.bindWorkspaceName(workspaceName.textProperty());
         viewModel.bindTaskName(name.textProperty());
@@ -97,6 +110,9 @@ public class WorkspaceView {
         viewModel.bindSelectedTask(selectedTask);
         viewModel.bindCheckedFilterPriorities(checkedFilterPriorities);
         viewModel.bindNameFilter(nameFilter.textProperty());
+        viewModel.bindAssignedUsers(assignedUsers.targetItemsProperty());
+        viewModel.bindAvailableUsers(assignedUsers.sourceItemsProperty());
+        viewModel.bindAssignedUsersFilter(assignedUsersFilterList);
 
         // TODO toto do viewmodelu
         workspaceName.setText(Auth.getInstance().getCurrentUser().getWorkspace().getName());
@@ -112,8 +128,28 @@ public class WorkspaceView {
         initSelectedTask();
         initIsNewTask();
         initPriorityFilter();
+        initAssignedUsersFilter();
 
         workspaceViewModel.getTasksForWorkspace();
+    }
+
+    private void initAssignedUsersFilter() {
+        assignedUsersFilter.getItems().addAll(viewModel.getAvailableUsers());
+//
+        assignedUsersFilter.getCheckModel().getCheckedItems().addListener((ListChangeListener<User>) c -> {
+            assignedUsersFilterList.clear();
+
+            ArrayList<User> checked = new ArrayList<>();
+            for (User user : assignedUsersFilter.getItems()) {
+                if (assignedUsersFilter.getCheckModel().isChecked(user)) {
+                    checked.add(user);
+                }
+            }
+
+            assignedUsersFilterList.addAll(checked);
+        });
+
+        assignedUsersFilter.getCheckModel().checkAll();
     }
 
     private void initPriorityFilter() {
@@ -140,16 +176,18 @@ public class WorkspaceView {
                 startButton.setVisible(false);
                 completeButton.setVisible(false);
 
-                // deselect all tasks
                 notStartedTasks.getSelectionModel().clearSelection();
                 inProgressTasks.getSelectionModel().clearSelection();
                 completedTasks.getSelectionModel().clearSelection();
+                viewModel.fetchAvailableUsers(null);
             } else {
                 newButton.setVisible(true);
                 deleteButton.setVisible(true);
                 startButton.setVisible(true);
                 completeButton.setVisible(true);
+                viewModel.fetchAvailableUsers(selectedTask.get());
             }
+
         });
 
         isNewTask.set(true);

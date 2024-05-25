@@ -31,6 +31,10 @@ public class Workspace implements Serializable {
         this.id = id;
     }
 
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
