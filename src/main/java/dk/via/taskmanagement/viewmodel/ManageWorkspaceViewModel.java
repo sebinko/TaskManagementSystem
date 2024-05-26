@@ -1,6 +1,5 @@
 package dk.via.taskmanagement.viewmodel;
 
-import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;

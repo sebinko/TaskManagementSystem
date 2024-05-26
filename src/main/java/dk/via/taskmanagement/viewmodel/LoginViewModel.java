@@ -1,7 +1,6 @@
 package dk.via.taskmanagement.viewmodel;
 
 import dk.via.taskmanagement.exceptions.AuthenticationException;
-import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.utilities.Auth;
@@ -24,9 +23,6 @@ public class LoginViewModel {
         username = new SimpleStringProperty();
         password = new SimpleStringProperty();
         message = new SimpleStringProperty();
-
-        username.set("milan444");
-        password.set("heslo123");
     }
 
     public void bindUsername(StringProperty property) {

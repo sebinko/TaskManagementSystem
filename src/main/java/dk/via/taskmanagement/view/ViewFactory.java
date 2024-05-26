@@ -32,21 +32,6 @@ public class ViewFactory {
         this.loginView = null;
         this.registerView = null;
     }
-//   public Region loadChatView() {
-//        if (chatView == null) {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("ChatView.fxml"));
-//            try {
-//                Region root = loader.load();
-//                chatView = loader.getController();
-//                chatView.init(viewHandler, viewModelFactory.getChatViewModel(), root);
-//            } catch (IOException e) {
-//                throw new IOError(e);
-//            }
-//        }
-//        chatView.reset();
-//        return chatView.getRoot();
-//    }
 
     public Region loadWelcomeView() {
         FXMLLoader loader = new FXMLLoader();
@@ -127,7 +112,7 @@ public class ViewFactory {
     }
 
     public Region load(String id) {
-        Region root = switch (id) {
+        return switch (id) {
             case WELCOME -> loadWelcomeView();
             case LOGIN -> loadLoginView();
             case REGISTER -> loadRegisterView();
@@ -136,6 +121,5 @@ public class ViewFactory {
             case MANAGE_WORKSPACE -> loadManageWorkspaceView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
-        return root;
     }
 }

@@ -44,9 +44,8 @@ public class ClientImplementation extends UnicastRemoteObject implements Client,
 
     @Override
     public User authenticateUser(String username, String password) throws RemoteException, AuthenticationException, SQLException {
-        User user = connector.authenticateUser(username, password);
 
-        return user;
+        return connector.authenticateUser(username, password);
     }
 
     @Override
