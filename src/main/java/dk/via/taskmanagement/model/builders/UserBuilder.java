@@ -8,7 +8,7 @@ public class UserBuilder {
     private String userName;
     private String password;
     private String role;
-    private Workspace workspace;
+    private Workspace workspace = null;
 
     public UserBuilder setId(Integer id) {
         this.id = id;

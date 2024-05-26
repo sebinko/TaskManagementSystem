@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class WorkspaceBuilder {
     private Integer id;
     private String name;
-    private ArrayList<User> users;
+    private ArrayList<User> users = new ArrayList<>();
 
     public WorkspaceBuilder setId(Integer id) {
         this.id = id;
@@ -28,6 +28,11 @@ public class WorkspaceBuilder {
     public Workspace build() {
         Workspace workspace = new Workspace(name);
         workspace.setId(id);
+
+        if (users == null) {
+            return workspace;
+        }
+
         workspace.getUsers().addAll(users);
         return workspace;
     }

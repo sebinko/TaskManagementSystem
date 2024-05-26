@@ -1,12 +1,16 @@
 package dk.via.taskmanagement.viewmodel;
 
 import dk.via.taskmanagement.exceptions.AuthenticationException;
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.validation.UserValidation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class LoginViewModel {
     private final Model model;
@@ -58,7 +62,7 @@ public class LoginViewModel {
         } catch (AuthenticationException e) {
             message.set("Invalid username or password");
             return null;
-        } catch (Exception e) {
+        } catch (RemoteException | SQLException e) {
             message.set(e.getMessage());
             return null;
         }

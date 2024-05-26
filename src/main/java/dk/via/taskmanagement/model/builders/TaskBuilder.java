@@ -16,7 +16,7 @@ public class TaskBuilder {
     private TaskState state;
     private LocalDate deadline;
     private Workspace workspace;
-    private ArrayList<User> users;
+    private ArrayList<User> users = new ArrayList<>();
 
     public TaskBuilder setId(Integer id) {
         this.id = id;

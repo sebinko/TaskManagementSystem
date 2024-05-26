@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS tag_list;
-DROP TABLE IF EXISTS tags;
-DROP TABLE IF EXISTS task_states;
-DROP TABLE IF EXISTS task_priorities;
-DROP TABLE IF EXISTS task_asignee;
-DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS workspaces;
+DROP TABLE IF EXISTS task_management_system.tag_list;
+DROP TABLE IF EXISTS task_management_system.tags;
+DROP TABLE IF EXISTS task_management_system.task_states;
+DROP TABLE IF EXISTS task_management_system.task_priorities;
+DROP TABLE IF EXISTS task_management_system.task_asignee;
+DROP TABLE IF EXISTS task_management_system.tasks;
+DROP TABLE IF EXISTS task_management_system.users;
+DROP TABLE IF EXISTS task_management_system.workspaces;
 DROP SCHEMA IF EXISTS task_management_system;
 
 create schema if not exists task_management_system;
@@ -60,18 +60,3 @@ create table task_states
     primary key (task_id, task_state),
     foreign key (task_id) references tasks (task_id)
 );
---
--- create table tags
--- (
---     tag_id serial primary key not null,
---     name   varchar(50)
--- );
---
--- create table tag_list
--- (
---     task_id smallint not null,
---     tag_id  smallint not null,
---     primary key (task_id, tag_id),
---     foreign key (task_id) references tasks (task_id),
---     foreign key (tag_id) references tags (tag_id)
--- );
