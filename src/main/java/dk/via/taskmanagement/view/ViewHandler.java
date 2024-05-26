@@ -7,9 +7,9 @@ import javafx.stage.Stage;
 
 public class ViewHandler {
     private final Scene currentScene;
-    private Stage primaryStage;
     private final ViewFactory viewFactory;
     private final ViewModelFactory viewModelFactory;
+    private Stage primaryStage;
 
     public ViewHandler(ViewModelFactory viewModelFactory) {
         this.viewFactory = new ViewFactory(this, viewModelFactory);

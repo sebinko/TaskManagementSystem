@@ -16,14 +16,12 @@ import java.util.ArrayList;
 
 public class ManageWorkspaceViewModel implements PropertyChangeListener {
     private final Model model;
-
+    private final ObjectProperty<User> usersWithoutWorkspaceSelected;
+    private final StringProperty userWithoutWorkspaceSelectedText;
     StringProperty workspaceName;
-
     ListProperty<User> currentUsers;
     ListProperty<User> usersWithoutWorkspace;
     StringProperty message;
-    private final ObjectProperty<User> usersWithoutWorkspaceSelected;
-    private final StringProperty userWithoutWorkspaceSelectedText;
 
 
     public ManageWorkspaceViewModel(Model model) {

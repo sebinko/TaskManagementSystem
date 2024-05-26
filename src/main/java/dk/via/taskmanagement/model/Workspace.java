@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Workspace implements Serializable {
+    private final ArrayList<User> users = new ArrayList<>();
     private Integer id;
     private String name;
-
-    private final ArrayList<User> users = new ArrayList<>();
 
     public Workspace(String name) {
         this.id = null;
