@@ -6,7 +6,6 @@ import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.viewmodel.WorkspaceViewModel;
 import javafx.beans.property.*;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
@@ -118,10 +117,6 @@ public class WorkspaceView {
         viewModel.bindAssignedUsersFilter(assignedUsersFilterList);
         viewModel.bindMessage(message.textProperty());
 
-        // TODO toto do viewmodelu
-        workspaceName.setText(Auth.getInstance().getCurrentUser().getWorkspace().getName());
-
-        // if user is admin then show manage workspace button and region otherwise hide
         boolean isAdmin = Auth.getInstance().getCurrentUser().getRole().equals("admin");
 
         manageWorkspaceButton.setVisible(isAdmin);

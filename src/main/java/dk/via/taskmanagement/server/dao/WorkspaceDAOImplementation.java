@@ -2,6 +2,7 @@ package dk.via.taskmanagement.server.dao;
 
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
+import dk.via.taskmanagement.model.builders.WorkspaceBuilder;
 import org.postgresql.Driver;
 
 import java.sql.*;
@@ -48,10 +49,11 @@ public class WorkspaceDAOImplementation implements WorkspaceDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new Workspace(
-                        resultSet.getInt(1),
-                        resultSet.getString(2)
-                );
+                WorkspaceBuilder workspaceBuilder = new WorkspaceBuilder();
+
+                return workspaceBuilder.setId(resultSet.getInt(1))
+                        .setName(resultSet.getString(2))
+                        .build();
             } else {
                 return null;
             }
@@ -68,10 +70,11 @@ public class WorkspaceDAOImplementation implements WorkspaceDAO {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return new Workspace(
-                        resultSet.getInt(1),
-                        resultSet.getString(2)
-                );
+                WorkspaceBuilder workspaceBuilder = new WorkspaceBuilder();
+
+                return workspaceBuilder.setId(resultSet.getInt(1))
+                        .setName(resultSet.getString(2))
+                        .build();
             } else {
                 return null;
             }

@@ -92,6 +92,8 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         nameFilter.addListener((observable, oldValue, newValue) -> {
             filterTasks();
         });
+
+        workspaceName.set(Auth.getInstance().getCurrentUser().getWorkspace().getName());
     }
 
     public void fetchAvailableUsers(Task task) {
