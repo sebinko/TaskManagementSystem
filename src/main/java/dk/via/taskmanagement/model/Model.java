@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface Model {
-    Workspace createWorkspace(Workspace workspace) throws RemoteException, SQLException;
+    Workspace createWorkspace(Workspace workspace) throws RemoteException, SQLException, ValidationException;
 
     void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException, SQLException;
 
-    User createUser(User user) throws RemoteException, SQLException;
+    User createUser(User user) throws RemoteException, SQLException, ValidationException;
 
     User authenticateUser(String username, String password) throws AuthenticationException, RemoteException, SQLException;
 

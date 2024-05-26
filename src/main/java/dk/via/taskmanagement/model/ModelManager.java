@@ -6,6 +6,8 @@ import dk.via.taskmanagement.exceptions.AuthenticationException;
 import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.shared.Connector;
 import dk.via.taskmanagement.validation.TaskValidation;
+import dk.via.taskmanagement.validation.UserValidation;
+import dk.via.taskmanagement.validation.WorkspaceValidation;
 import javafx.application.Platform;
 
 import java.beans.PropertyChangeEvent;
@@ -26,7 +28,9 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public synchronized Workspace createWorkspace(Workspace workspace) throws SQLException, RemoteException {
+    public synchronized Workspace createWorkspace(Workspace workspace) throws ValidationException, SQLException, RemoteException {
+        WorkspaceValidation.validate(workspace);
+
         return client.createWorkspace(workspace);
     }
 
@@ -36,7 +40,9 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public synchronized User createUser(User user) throws SQLException, RemoteException {
+    public synchronized User createUser(User user) throws SQLException, RemoteException, ValidationException {
+        UserValidation.validate(user);
+
         return client.createUser(user);
     }
 
