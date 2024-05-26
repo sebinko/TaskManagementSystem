@@ -1,11 +1,15 @@
 package dk.via.taskmanagement.viewmodel;
 
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.validation.UserValidation;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class RegisterViewModel {
     private final Model model;
@@ -71,7 +75,7 @@ public class RegisterViewModel {
 
         try {
             user = model.createUser(user);
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException | ValidationException e) {
             message.set(e.getMessage());
             return null;
         }

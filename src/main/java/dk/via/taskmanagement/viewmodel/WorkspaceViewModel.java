@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.viewmodel;
 
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.*;
 import dk.via.taskmanagement.model.builders.TaskBuilder;
 import dk.via.taskmanagement.utilities.Auth;
@@ -9,6 +10,8 @@ import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -103,7 +106,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
             ArrayList<User> users;
             try {
                 users = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
-            } catch (Exception e) {
+            } catch (SQLException | RemoteException e) {
                 message.set(e.getMessage());
                 return;
             }
@@ -116,7 +119,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
             ArrayList<User> usersForWorkspace;
             try {
                 usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
-            } catch (Exception e) {
+            } catch (SQLException | RemoteException e) {
                 message.set(e.getMessage());
                 return;
             }
@@ -138,7 +141,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public void getTasksForWorkspace() {
         try {
             tasks = model.getTasksForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.set(e.getMessage());
             return;
         }
@@ -226,7 +229,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         try {
             model.createTask(task);
             message.setValue("");
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException | ValidationException e) {
             message.setValue(e.getMessage());
         }
     }
@@ -242,7 +245,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         try {
             model.updateTask(getTask());
             message.setValue("");
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException | ValidationException e) {
             message.setValue(e.getMessage());
         }
     }
@@ -281,7 +284,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public void deleteTask() {
         try {
             model.deleteTask(getTask());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.setValue(e.getMessage());
         }
     }
@@ -289,7 +292,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public void startTask() {
         try {
             model.startTask(getTask());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.setValue(e.getMessage());
         }
     }
@@ -297,7 +300,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public void completeTask() {
         try {
             model.completeTask(getTask());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.setValue(e.getMessage());
         }
     }
@@ -353,7 +356,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         ArrayList<User> ret;
         try {
             ret = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.set(e.getMessage());
             return null;
         }

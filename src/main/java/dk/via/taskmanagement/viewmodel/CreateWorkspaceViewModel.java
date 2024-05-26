@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.viewmodel;
 
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
@@ -7,6 +8,9 @@ import dk.via.taskmanagement.utilities.Auth;
 import dk.via.taskmanagement.validation.WorkspaceValidation;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class CreateWorkspaceViewModel {
     private final Model model;
@@ -39,7 +43,7 @@ public class CreateWorkspaceViewModel {
 
         try {
             workspace = model.createWorkspace(new Workspace(name.get()));
-        } catch (Exception e) {
+        } catch (SQLException | ValidationException | RemoteException e) {
             message.set(e.getMessage());
             return null;
         }
@@ -48,7 +52,7 @@ public class CreateWorkspaceViewModel {
 
         try {
             model.addWorkSpaceUser(workspace, user);
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.set(e.getMessage());
             return null;
         }

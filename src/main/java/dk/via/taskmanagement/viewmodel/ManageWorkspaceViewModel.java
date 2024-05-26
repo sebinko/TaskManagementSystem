@@ -1,5 +1,6 @@
 package dk.via.taskmanagement.viewmodel;
 
+import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.Model;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
@@ -10,6 +11,8 @@ import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ManageWorkspaceViewModel implements PropertyChangeListener {
@@ -44,7 +47,7 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
         try {
             usersWithoutWorkspace = model.getUsersWithoutWorkspace();
             usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.set(e.getMessage());
             return;
         }
@@ -97,7 +100,7 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
             try {
                 usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
                 usersWithoutWorkspace = model.getUsersWithoutWorkspace();
-            } catch (Exception e) {
+            } catch (SQLException | RemoteException e) {
                 message.set(e.getMessage());
                 return;
             }
@@ -116,7 +119,7 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
         try {
             model.addWorkSpaceUser(workspace, user);
-        } catch (Exception e) {
+        } catch (SQLException | RemoteException e) {
             message.set(e.getMessage());
         }
     }
