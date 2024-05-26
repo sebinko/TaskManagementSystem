@@ -12,25 +12,19 @@ import javafx.scene.layout.Region;
 
 
 public class RegisterView {
+    @FXML
+    TextField username;
+    @FXML
+    PasswordField password;
+    @FXML
+    TextField passwordConfirmation;
+    @FXML
+    ComboBox<String> role;
+    @FXML
+    Label message;
     private ViewHandler viewHandler;
     private RegisterViewModel registerViewModel;
     private Region root;
-
-    @FXML
-    TextField username;
-
-    @FXML
-    PasswordField password;
-
-    @FXML
-    TextField passwordConfirmation;
-
-    @FXML
-    ComboBox<String> role;
-
-    @FXML
-    Label message;
-
 
     public void init(ViewHandler viewHandler, RegisterViewModel registerViewModel, Region root) {
         this.viewHandler = viewHandler;

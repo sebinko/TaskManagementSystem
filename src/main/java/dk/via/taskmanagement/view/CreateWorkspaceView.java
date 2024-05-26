@@ -8,16 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 
 public class CreateWorkspaceView {
-    private ViewHandler viewHandler;
-    private CreateWorkspaceViewModel createWorkspaceViewModel;
-
-    private Region root;
-
     @FXML
     TextField name;
-
     @FXML
     Label message;
+    private ViewHandler viewHandler;
+    private CreateWorkspaceViewModel createWorkspaceViewModel;
+    private Region root;
 
     public void init(ViewHandler viewHandler, CreateWorkspaceViewModel createWorkspaceViewModel, Region root) {
         this.viewHandler = viewHandler;

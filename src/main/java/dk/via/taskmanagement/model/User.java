@@ -7,7 +7,7 @@ public class User implements Serializable {
     private String userName;
     private String password;
     private String role;
-    private Workspace workspace;
+    private final Workspace workspace;
 
     public User(String userName, String password, String role, Workspace workspace) {
         this.id = null;
@@ -29,16 +29,16 @@ public class User implements Serializable {
         return userName;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public Integer getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {

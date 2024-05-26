@@ -19,12 +19,9 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     ListProperty<User> currentUsers;
     ListProperty<User> usersWithoutWorkspace;
-
-    private ObjectProperty<User> usersWithoutWorkspaceSelected;
-
-    private StringProperty userWithoutWorkspaceSelectedText;
-
     StringProperty message;
+    private final ObjectProperty<User> usersWithoutWorkspaceSelected;
+    private final StringProperty userWithoutWorkspaceSelectedText;
 
 
     public ManageWorkspaceViewModel(Model model) {

@@ -23,7 +23,7 @@ public interface Model {
 
     Task createTask(Task task) throws ValidationException, RemoteException, SQLException;
 
-    Task updateTask(Task task) throws ValidationException ,RemoteException, SQLException;
+    Task updateTask(Task task) throws ValidationException, RemoteException, SQLException;
 
     Task deleteTask(Task task) throws RemoteException, SQLException;
 

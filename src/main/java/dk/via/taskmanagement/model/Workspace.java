@@ -7,7 +7,7 @@ public class Workspace implements Serializable {
     private Integer id;
     private String name;
 
-    private ArrayList<User> users = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>();
 
     public Workspace(String name) {
         this.id = null;
@@ -23,6 +23,10 @@ public class Workspace implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
@@ -33,10 +37,6 @@ public class Workspace implements Serializable {
 
     public ArrayList<User> getUsers() {
         return users;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

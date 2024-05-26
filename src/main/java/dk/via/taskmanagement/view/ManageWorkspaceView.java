@@ -12,34 +12,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 
 public class ManageWorkspaceView {
-    private ViewHandler viewHandler;
-
-    private ManageWorkspaceViewModel manageWorkspaceViewModel;
-
-    private Region root;
-
     @FXML
     TableView<User> currentUsers;
+    @FXML
+    TableView<User> usersWithoutWorkspace;
+    @FXML
+    Label userWithoutWorkspaceSelectedLabel;
+    @FXML
+    Label workspaceName;
+    private ViewHandler viewHandler;
+    private ManageWorkspaceViewModel manageWorkspaceViewModel;
+    private Region root;
     @FXML
     private TableColumn<User, String> currentUsersIdColumn;
     @FXML
     private TableColumn<User, String> currentUsersUsernameColumn;
-
-    @FXML
-    TableView<User> usersWithoutWorkspace;
     @FXML
     private TableColumn<User, String> usersWithoutWorkspaceIdColumn;
     @FXML
     private TableColumn<User, String> usersWithoutWorkspaceUsernameColumn;
-
-    @FXML
-    Label userWithoutWorkspaceSelectedLabel;
-
     private ReadOnlyObjectProperty<User> usersWithoutWorkspaceSelected;
-
-
-    @FXML
-    Label workspaceName;
 
     public void init(ViewHandler viewHandler, ManageWorkspaceViewModel manageWorkspaceViewModel, Region root) {
         this.viewHandler = viewHandler;

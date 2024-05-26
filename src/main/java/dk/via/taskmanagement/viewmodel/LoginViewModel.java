@@ -11,9 +11,9 @@ import javafx.beans.property.StringProperty;
 public class LoginViewModel {
     private final Model model;
 
-    private StringProperty username;
-    private StringProperty password;
-    private StringProperty message;
+    private final StringProperty username;
+    private final StringProperty password;
+    private final StringProperty message;
 
     public LoginViewModel(Model model) {
         this.model = model;

@@ -11,9 +11,9 @@ import javafx.beans.property.StringProperty;
 public class CreateWorkspaceViewModel {
     private final Model model;
 
-    private StringProperty name;
+    private final StringProperty name;
 
-    private StringProperty message;
+    private final StringProperty message;
 
     public CreateWorkspaceViewModel(Model model) {
         this.model = model;

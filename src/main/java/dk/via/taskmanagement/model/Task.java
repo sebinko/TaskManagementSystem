@@ -16,18 +16,6 @@ public class Task implements Serializable {
 
     private Workspace workspace;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public enum Priority {
-        LOW, MEDIUM, HIGH
-    }
-
     public Task(String taskName, Workspace workspace) {
         id = null;
         state = new NotStarted();
@@ -47,6 +35,13 @@ public class Task implements Serializable {
         workspace = null;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public void startTask() {
         state.startTask(this);
@@ -55,7 +50,6 @@ public class Task implements Serializable {
     public void completeTask() {
         state.finnishTask(this);
     }
-
 
     public String getName() {
         return name;
@@ -116,5 +110,9 @@ public class Task implements Serializable {
     @Override
     public String toString() {
         return "[" + priority + "] " + name;
+    }
+
+    public enum Priority {
+        LOW, MEDIUM, HIGH
     }
 }

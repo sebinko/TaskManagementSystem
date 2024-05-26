@@ -1,6 +1,5 @@
 package dk.via.taskmanagement.viewmodel;
 
-import dk.via.taskmanagement.exceptions.ValidationException;
 import dk.via.taskmanagement.model.*;
 import dk.via.taskmanagement.model.builders.TaskBuilder;
 import dk.via.taskmanagement.utilities.Auth;
@@ -95,8 +94,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
 
     }
 
-    public void init()
-    {
+    public void init() {
         workspaceName.set(Auth.getInstance().getCurrentUser().getWorkspace().getName());
     }
 

@@ -10,12 +10,12 @@ import javafx.beans.property.StringProperty;
 public class RegisterViewModel {
     private final Model model;
 
-    private StringProperty username;
-    private StringProperty password;
-    private StringProperty passwordConfirmation;
-    private StringProperty message;
+    private final StringProperty username;
+    private final StringProperty password;
+    private final StringProperty passwordConfirmation;
+    private final StringProperty message;
 
-    private StringProperty role;
+    private final StringProperty role;
 
     public RegisterViewModel(Model model) {
         this.model = model;

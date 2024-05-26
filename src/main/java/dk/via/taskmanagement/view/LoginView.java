@@ -8,19 +8,15 @@ import javafx.scene.layout.Region;
 
 
 public class LoginView {
-    private ViewHandler viewHandler;
-    private LoginViewModel loginViewModel;
-
-    private Region root;
-
     @FXML
     TextField username;
-
     @FXML
     PasswordField password;
-
     @FXML
     Label message;
+    private ViewHandler viewHandler;
+    private LoginViewModel loginViewModel;
+    private Region root;
 
     public void init(ViewHandler viewHandler, LoginViewModel loginViewModel, Region root) {
         this.viewHandler = viewHandler;

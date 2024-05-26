@@ -4,7 +4,6 @@ import dk.via.taskmanagement.model.Task;
 import dk.via.taskmanagement.model.TaskState;
 import dk.via.taskmanagement.model.User;
 import dk.via.taskmanagement.model.Workspace;
-import javafx.beans.property.ListProperty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class TaskBuilder {
     }
 
     public TaskBuilder setUsers(ArrayList<User> assignedUsers) {
-        users= assignedUsers;
+        users = assignedUsers;
         return this;
     }
 }

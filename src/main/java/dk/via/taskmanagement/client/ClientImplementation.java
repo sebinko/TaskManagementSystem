@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ClientImplementation extends UnicastRemoteObject implements Client, RemotePropertyChangeListener {
     private final Connector connector;
-    private PropertyChangeSupport propertyChangeSupport;
+    private final PropertyChangeSupport propertyChangeSupport;
 
     public ClientImplementation(Connector connector) throws RemoteException {
         this.connector = connector;
