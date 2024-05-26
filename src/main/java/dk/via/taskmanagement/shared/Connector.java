@@ -18,8 +18,6 @@ public interface Connector extends Remote {
 
     User createUser(User user) throws RemoteException, SQLException;
 
-    User getUserByUsername(String username) throws RemoteException, SQLException;
-
     User authenticateUser(String username, String password) throws RemoteException, AuthenticationException, SQLException;
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException, SQLException;

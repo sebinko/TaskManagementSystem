@@ -45,11 +45,6 @@ public class RemoteConnector implements Connector {
     }
 
     @Override
-    public User getUserByUsername(String username) throws RemoteException, SQLException {
-        return UserDAOImplementation.getInstance().getByUsername(username);
-    }
-
-    @Override
     public User authenticateUser(String username, String password) throws RemoteException, AuthenticationException, SQLException {
         User user = UserDAOImplementation.getInstance().getByUsername(username);
 

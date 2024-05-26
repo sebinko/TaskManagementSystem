@@ -15,8 +15,6 @@ public interface Model {
 
     User createUser(User user) throws RemoteException, SQLException;
 
-    User getUserByUsername(String username) throws RemoteException, SQLException;
-
     User authenticateUser(String username, String password) throws AuthenticationException, RemoteException, SQLException;
 
     ArrayList<User> getUsersWithoutWorkspace() throws RemoteException, SQLException;

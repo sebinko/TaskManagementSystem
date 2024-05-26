@@ -40,12 +40,6 @@ public class ModelManager implements Model, PropertyChangeListener {
         return client.createUser(user);
     }
 
-    // TODO toto sa nepouziva dat dopice
-    @Override
-    public User getUserByUsername(String username) throws SQLException, RemoteException {
-        return client.getUserByUsername(username);
-    }
-
     @Override
     public synchronized User authenticateUser(String username, String password) throws AuthenticationException, SQLException, RemoteException {
         return client.authenticateUser(username, password);
