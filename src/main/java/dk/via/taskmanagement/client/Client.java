@@ -7,40 +7,39 @@ import dk.via.taskmanagement.model.Workspace;
 
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface Client {
-    Workspace createWorkspace(Workspace workspace) throws RemoteException;
+    Workspace createWorkspace(Workspace workspace) throws RemoteException, SQLException;
 
-    Workspace getWorkspace(User requestingUser) throws RemoteException;
+    void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException, SQLException;
 
-    void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException;
+    User createUser(User user) throws RemoteException, SQLException;
 
-    User createUser(User user) throws RemoteException;
+    User getUserByUsername(String username) throws RemoteException, SQLException;
 
-    User getUserByUsername(String username) throws RemoteException;
+    User authenticateUser(String username, String password) throws RemoteException, AuthenticationException, SQLException;
 
-    User authenticateUser(String username, String password) throws RemoteException, AuthenticationException;
+    ArrayList<User> getUsersWithoutWorkspace() throws RemoteException, SQLException;
 
-    ArrayList<User> getUsersWithoutWorkspace() throws RemoteException;
-
-    ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException;
+    ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException, SQLException;
 
     /*
     TASKS
      */
 
-    Task createTask(Task task) throws RemoteException;
+    Task createTask(Task task) throws RemoteException, SQLException;
 
-    Task updateTask(Task task) throws RemoteException;
+    Task updateTask(Task task) throws RemoteException, SQLException;
 
-    Task deleteTask(Task task) throws RemoteException;
+    Task deleteTask(Task task) throws RemoteException, SQLException;
 
-    Task startTask(Task task) throws RemoteException;
+    Task startTask(Task task) throws RemoteException, SQLException;
 
-    Task completeTask(Task task) throws RemoteException;
+    Task completeTask(Task task) throws RemoteException, SQLException;
 
-    ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException;
+    ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException, SQLException;
 
     /*
     PROPERTY CHANGE LISTENER

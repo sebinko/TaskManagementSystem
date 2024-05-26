@@ -58,6 +58,9 @@ public class LoginViewModel {
         } catch (AuthenticationException e) {
             message.set("Invalid username or password");
             return null;
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return null;
         }
     }
 }

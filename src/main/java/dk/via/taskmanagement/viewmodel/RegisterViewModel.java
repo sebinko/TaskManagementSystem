@@ -69,7 +69,13 @@ public class RegisterViewModel {
 
         User user = new User(username.get(), password.get(), role.get(), null);
 
-        user = model.createUser(user);
+        try {
+            user = model.createUser(user);
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return null;
+        }
+
         message.set("User created successfully");
 
         return user;

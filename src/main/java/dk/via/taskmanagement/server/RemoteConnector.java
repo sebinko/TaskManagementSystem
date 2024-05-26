@@ -24,159 +24,101 @@ public class RemoteConnector implements Connector {
 
 
     @Override
-    public Workspace createWorkspace(Workspace workspace) throws RemoteException {
-        try {
-            Workspace newWorkspace = WorkspaceDAOImplementation.getInstance().createWorkspace(workspace);
+    public Workspace createWorkspace(Workspace workspace) throws RemoteException, SQLException {
+        Workspace newWorkspace = WorkspaceDAOImplementation.getInstance().createWorkspace(workspace);
 
-            support.firePropertyChange("createWorkspace", null, newWorkspace);
+        support.firePropertyChange("createWorkspace", null, newWorkspace);
 
-            return newWorkspace;
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
-
+        return newWorkspace;
     }
 
     @Override
-    public Workspace getWorkspace(User requestingUser) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException {
-        try {
-            WorkspaceDAOImplementation.getInstance().addWorkSpaceUser(workspace, newUser);
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public void addWorkSpaceUser(Workspace workspace, User newUser) throws RemoteException, SQLException {
+        WorkspaceDAOImplementation.getInstance().addWorkSpaceUser(workspace, newUser);
 
         support.firePropertyChange("addWorkSpaceUser", null, newUser);
     }
 
     @Override
-    public User createUser(User user) throws RemoteException {
-        try {
-            return UserDAOImplementation.getInstance().create(user);
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public User createUser(User user) throws RemoteException, SQLException {
+        return UserDAOImplementation.getInstance().create(user);
     }
 
     @Override
-    public User getUserByUsername(String username) throws RemoteException {
-        try {
-            return UserDAOImplementation.getInstance().getByUsername(username);
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public User getUserByUsername(String username) throws RemoteException, SQLException {
+        return UserDAOImplementation.getInstance().getByUsername(username);
     }
 
     @Override
-    public User authenticateUser(String username, String password) throws RemoteException, AuthenticationException {
-        try {
-            User user = UserDAOImplementation.getInstance().getByUsername(username);
+    public User authenticateUser(String username, String password) throws RemoteException, AuthenticationException, SQLException {
+        User user = UserDAOImplementation.getInstance().getByUsername(username);
 
-            if (user == null || !user.getPassword().equals(password)) {
-                throw new AuthenticationException("Invalid username or password");
-            }
-
-            return user;
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new AuthenticationException("Invalid username or password");
         }
+
+        return user;
     }
 
     @Override
-    public ArrayList<User> getUsersWithoutWorkspace() throws RemoteException {
-        try {
-            return UserDAOImplementation.getInstance().getUsersWithoutWorkspace();
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public ArrayList<User> getUsersWithoutWorkspace() throws RemoteException, SQLException {
+        return UserDAOImplementation.getInstance().getUsersWithoutWorkspace();
     }
 
     @Override
-    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException {
-        try {
-            return UserDAOImplementation.getInstance().getUsersForWorkspace(workspace);
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws RemoteException, SQLException {
+        return UserDAOImplementation.getInstance().getUsersForWorkspace(workspace);
     }
 
     @Override
-    public Task createTask(Task task) throws RemoteException {
-        try {
-            TaskDaoImplementation.getInstance().createTask(task);
+    public Task createTask(Task task) throws RemoteException, SQLException {
+        TaskDaoImplementation.getInstance().createTask(task);
 
-            support.firePropertyChange("updateTasks", null, task);
+        support.firePropertyChange("updateTasks", null, task);
 
-            return task;
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
-        }
+        return task;
 
     }
 
     @Override
-    public Task updateTask(Task task) throws RemoteException {
-        try {
-            TaskDaoImplementation.getInstance().updateTask(task);
+    public Task updateTask(Task task) throws RemoteException, SQLException {
+        TaskDaoImplementation.getInstance().updateTask(task);
 
-            support.firePropertyChange("updateTasks", null, task);
+        support.firePropertyChange("updateTasks", null, task);
 
-            return task;
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
-        }
+        return task;
     }
 
     @Override
-    public Task deleteTask(Task task) throws RemoteException {
-        try {
-            TaskDaoImplementation.getInstance().deleteTask(task);
+    public Task deleteTask(Task task) throws RemoteException, SQLException {
+        TaskDaoImplementation.getInstance().deleteTask(task);
 
-            support.firePropertyChange("updateTasks", null, task);
+        support.firePropertyChange("updateTasks", null, task);
 
-            return task;
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
-        }
+        return task;
     }
 
     @Override
-    public Task startTask(Task task) throws RemoteException {
-        try {
-            TaskDaoImplementation.getInstance().updateTaskState(task);
+    public Task startTask(Task task) throws RemoteException, SQLException {
+        TaskDaoImplementation.getInstance().updateTaskState(task);
 
-            support.firePropertyChange("updateTasks", null, task);
+        support.firePropertyChange("updateTasks", null, task);
 
-            return task;
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
-        }
+        return task;
     }
 
     @Override
-    public Task completeTask(Task task) throws RemoteException {
-        try {
-            TaskDaoImplementation.getInstance().updateTaskState(task);
+    public Task completeTask(Task task) throws RemoteException, SQLException {
+        TaskDaoImplementation.getInstance().updateTaskState(task);
 
-            support.firePropertyChange("updateTasks", null, task);
+        support.firePropertyChange("updateTasks", null, task);
 
-            return task;
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
-        }
+        return task;
     }
 
     @Override
-    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException {
-        try {
-            return TaskDaoImplementation.getInstance().getTasksForWorkspace(workspace);
-        } catch (SQLException e) {
-            throw new RemoteException(e.getMessage());
-        }
+    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws RemoteException, SQLException {
+        return TaskDaoImplementation.getInstance().getTasksForWorkspace(workspace);
     }
 
     @Override

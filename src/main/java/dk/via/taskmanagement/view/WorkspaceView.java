@@ -129,12 +129,13 @@ public class WorkspaceView {
         initPriorityFilter();
         initAssignedUsersFilter();
 
+        workspaceViewModel.init();
         workspaceViewModel.getTasksForWorkspace();
     }
 
     private void initAssignedUsersFilter() {
         assignedUsersFilter.getItems().addAll(viewModel.getAvailableUsers());
-//
+
         assignedUsersFilter.getCheckModel().getCheckedItems().addListener((ListChangeListener<User>) c -> {
             assignedUsersFilterList.clear();
 

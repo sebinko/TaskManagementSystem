@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ModelManager implements Model, PropertyChangeListener {
@@ -25,137 +26,77 @@ public class ModelManager implements Model, PropertyChangeListener {
     }
 
     @Override
-    public synchronized Workspace createWorkspace(Workspace workspace) {
-        try {
-            return client.createWorkspace(workspace);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized Workspace createWorkspace(Workspace workspace) throws SQLException, RemoteException {
+        return client.createWorkspace(workspace);
     }
 
     @Override
-    public Workspace getWorkspace(User requestingUser) {
-        try {
-            return client.getWorkspace(requestingUser);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized void addWorkSpaceUser(Workspace workspace, User newUser) throws SQLException, RemoteException {
+        client.addWorkSpaceUser(workspace, newUser);
     }
 
     @Override
-    public synchronized void addWorkSpaceUser(Workspace workspace, User newUser) {
-        try {
-            client.addWorkSpaceUser(workspace, newUser);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized User createUser(User user) throws SQLException, RemoteException {
+        return client.createUser(user);
+    }
+
+    // TODO toto sa nepouziva dat dopice
+    @Override
+    public User getUserByUsername(String username) throws SQLException, RemoteException {
+        return client.getUserByUsername(username);
     }
 
     @Override
-    public synchronized User createUser(User user) {
-        try {
-            return client.createUser(user);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized User authenticateUser(String username, String password) throws AuthenticationException, SQLException, RemoteException {
+        return client.authenticateUser(username, password);
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        try {
-            return client.getUserByUsername(username);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public ArrayList<User> getUsersWithoutWorkspace() throws SQLException, RemoteException {
+        return client.getUsersWithoutWorkspace();
     }
 
     @Override
-    public synchronized User authenticateUser(String username, String password) throws AuthenticationException {
-        try {
-            return client.authenticateUser(username, password);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public ArrayList<User> getUsersForWorkspace(Workspace workspace) throws SQLException, RemoteException {
+        return client.getUsersForWorkspace(workspace);
     }
 
     @Override
-    public ArrayList<User> getUsersWithoutWorkspace() {
-        try {
-            return client.getUsersWithoutWorkspace();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized Task createTask(Task task) throws ValidationException, SQLException, RemoteException {
+        TaskValidation.validate(task);
+
+        return client.createTask(task);
     }
 
     @Override
-    public ArrayList<User> getUsersForWorkspace(Workspace workspace) {
-        try {
-            return client.getUsersForWorkspace(workspace);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized Task updateTask(Task task) throws ValidationException, SQLException, RemoteException {
+        TaskValidation.validate(task);
+
+        return client.updateTask(task);
     }
 
     @Override
-    public synchronized Task createTask(Task task) throws ValidationException {
-        try {
-            TaskValidation.validate(task);
-
-            return client.createTask(task);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized Task deleteTask(Task task) throws SQLException, RemoteException {
+        return client.deleteTask(task);
     }
 
     @Override
-    public synchronized Task updateTask(Task task) throws ValidationException {
-        try {
-            TaskValidation.validate(task);
+    public synchronized Task startTask(Task task) throws SQLException, RemoteException {
+        task.startTask();
 
-            return client.updateTask(task);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+        return client.startTask(task);
     }
 
     @Override
-    public synchronized Task deleteTask(Task task) {
-        try {
-            return client.deleteTask(task);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public synchronized Task completeTask(Task task) throws SQLException, RemoteException {
+        task.completeTask();
+
+        return client.completeTask(task);
     }
 
     @Override
-    public synchronized Task startTask(Task task) {
-        try {
-            task.startTask();
-
-            return client.startTask(task);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public synchronized Task completeTask(Task task) {
-        try {
-            task.completeTask();
-
-            return client.completeTask(task);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) {
-        try {
-            return client.getTasksForWorkspace(workspace);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
+    public ArrayList<Task> getTasksForWorkspace(Workspace workspace) throws SQLException, RemoteException {
+        return client.getTasksForWorkspace(workspace);
     }
 
     @Override

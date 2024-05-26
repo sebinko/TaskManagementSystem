@@ -35,7 +35,15 @@ public class CreateWorkspaceViewModel {
             return null;
         }
 
-        Workspace workspace = model.createWorkspace(new Workspace(name.get()));
+        Workspace workspace;
+
+        try {
+            workspace = model.createWorkspace(new Workspace(name.get()));
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return null;
+        }
+
         User user = Auth.getInstance().getCurrentUser();
 
         try {

@@ -93,22 +93,40 @@ public class WorkspaceViewModel implements PropertyChangeListener {
             filterTasks();
         });
 
+    }
+
+    public void init()
+    {
         workspaceName.set(Auth.getInstance().getCurrentUser().getWorkspace().getName());
     }
 
     public void fetchAvailableUsers(Task task) {
         if (task == null) {
+            ArrayList<User> users;
+            try {
+                users = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+            } catch (Exception e) {
+                message.set(e.getMessage());
+                return;
+            }
+
             availableUsers.clear();
             assignedUsers.clear();
 
-            ArrayList<User> users = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
             availableUsers.addAll(users);
         } else {
+            ArrayList<User> usersForWorkspace;
+            try {
+                usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+            } catch (Exception e) {
+                message.set(e.getMessage());
+                return;
+            }
+
             availableUsers.clear();
             assignedUsers.clear();
 
             ArrayList<User> usersForTask = task.getUsers();
-            ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
 
             ArrayList<User> users = new ArrayList<>(usersForWorkspace);
             users.removeIf(user -> usersForTask.stream().anyMatch(userForTask -> userForTask.getId().equals(user.getId())));
@@ -120,7 +138,12 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     }
 
     public void getTasksForWorkspace() {
-        tasks = model.getTasksForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        try {
+            tasks = model.getTasksForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return;
+        }
 
         notStartedTasks.clear();
         inProgressTasks.clear();
@@ -205,7 +228,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         try {
             model.createTask(task);
             message.setValue("");
-        } catch (ValidationException e) {
+        } catch (Exception e) {
             message.setValue(e.getMessage());
         }
     }
@@ -221,7 +244,7 @@ public class WorkspaceViewModel implements PropertyChangeListener {
         try {
             model.updateTask(getTask());
             message.setValue("");
-        } catch (ValidationException e) {
+        } catch (Exception e) {
             message.setValue(e.getMessage());
         }
     }
@@ -258,15 +281,27 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     }
 
     public void deleteTask() {
-        model.deleteTask(getTask());
+        try {
+            model.deleteTask(getTask());
+        } catch (Exception e) {
+            message.setValue(e.getMessage());
+        }
     }
 
     public void startTask() {
-        model.startTask(getTask());
+        try {
+            model.startTask(getTask());
+        } catch (Exception e) {
+            message.setValue(e.getMessage());
+        }
     }
 
     public void completeTask() {
-        model.completeTask(getTask());
+        try {
+            model.completeTask(getTask());
+        } catch (Exception e) {
+            message.setValue(e.getMessage());
+        }
     }
 
     public synchronized void filterTasks() {
@@ -317,7 +352,13 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     }
 
     public ArrayList<User> getAvailableUsers() {
-        ArrayList<User> ret = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        ArrayList<User> ret;
+        try {
+            ret = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return null;
+        }
 
         User nonExistingUser = new User("NotAssigned", "", "", null);
         ret.add(nonExistingUser);

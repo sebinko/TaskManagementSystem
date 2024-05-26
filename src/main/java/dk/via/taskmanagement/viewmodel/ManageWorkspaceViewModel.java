@@ -24,6 +24,8 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
 
     private StringProperty userWithoutWorkspaceSelectedText;
 
+    StringProperty message;
+
 
     public ManageWorkspaceViewModel(Model model) {
         this.model = model;
@@ -33,16 +35,26 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
         workspaceName = new SimpleStringProperty();
         usersWithoutWorkspaceSelected = new SimpleObjectProperty<>();
         userWithoutWorkspaceSelectedText = new SimpleStringProperty();
+        message = new SimpleStringProperty();
         model.addPropertyChangeListener(this);
 
     }
 
     public void init() {
-        ArrayList<User> usersWithoutWorkspace = model.getUsersWithoutWorkspace();
+        ArrayList<User> usersWithoutWorkspace;
+        ArrayList<User> usersForWorkspace;
+
+        try {
+            usersWithoutWorkspace = model.getUsersWithoutWorkspace();
+            usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+        } catch (Exception e) {
+            message.set(e.getMessage());
+            return;
+        }
+
         this.usersWithoutWorkspace.clear();
         this.usersWithoutWorkspace.addAll(usersWithoutWorkspace);
 
-        ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
         this.currentUsers.clear();
         this.currentUsers.addAll(usersForWorkspace);
     }
@@ -63,13 +75,16 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
         property.bind(userWithoutWorkspaceSelectedText);
     }
 
+    public void bindMessage(StringProperty property) {
+        property.bind(message);
+    }
+
     public void onSelect() {
         if (usersWithoutWorkspaceSelected.get() != null) {
             userWithoutWorkspaceSelectedText.set("Selected: " + usersWithoutWorkspaceSelected.get().getUserName());
         } else {
             userWithoutWorkspaceSelectedText.set("Selected: ");
         }
-
     }
 
     @Override
@@ -79,12 +94,21 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
                 return;
             }
 
+            ArrayList<User> usersForWorkspace;
+            ArrayList<User> usersWithoutWorkspace;
+
+            try {
+                usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
+                usersWithoutWorkspace = model.getUsersWithoutWorkspace();
+            } catch (Exception e) {
+                message.set(e.getMessage());
+                return;
+            }
+
             this.currentUsers.clear();
-            ArrayList<User> usersForWorkspace = model.getUsersForWorkspace(Auth.getInstance().getCurrentUser().getWorkspace());
             this.currentUsers.addAll(usersForWorkspace);
 
             this.usersWithoutWorkspace.clear();
-            ArrayList<User> usersWithoutWorkspace = model.getUsersWithoutWorkspace();
             this.usersWithoutWorkspace.addAll(usersWithoutWorkspace);
         }
     }
@@ -92,7 +116,11 @@ public class ManageWorkspaceViewModel implements PropertyChangeListener {
     public void addUserToWorkspace() {
         User user = usersWithoutWorkspaceSelected.get();
         Workspace workspace = Auth.getInstance().getCurrentUser().getWorkspace();
-        model.addWorkSpaceUser(workspace, user);
-//        usersWithoutWorkspaceSelected.set(null);
+
+        try {
+            model.addWorkSpaceUser(workspace, user);
+        } catch (Exception e) {
+            message.set(e.getMessage());
+        }
     }
 }
