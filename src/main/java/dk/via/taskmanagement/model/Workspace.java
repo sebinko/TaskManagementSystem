@@ -13,9 +13,9 @@ public class Workspace implements Serializable {
         this.name = name;
     }
 
-    public Workspace(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public Workspace() {
+        this.id = null;
+        this.name = null;
     }
 
     public String getName() {
@@ -26,23 +26,15 @@ public class Workspace implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public ArrayList<User> getUsers() {
         return users;
-    }
-
-    @Override
-    public String toString() {
-        return "Workspace{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

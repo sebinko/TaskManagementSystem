@@ -11,6 +11,6 @@ public class WorkspaceValidation {
     }
 
     public static boolean validateName(String name) {
-        return !name.isEmpty();
+        return name != null && !name.isEmpty();
     }
 }

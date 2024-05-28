@@ -3,7 +3,7 @@ package dk.via.taskmanagement.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private final Workspace workspace;
+    private Workspace workspace;
     private Integer id;
     private String userName;
     private String password;
@@ -17,12 +17,11 @@ public class User implements Serializable {
         this.workspace = workspace;
     }
 
-    public User(int id, String userName, String password, String role, Workspace workspace) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-        this.role = role;
-        this.workspace = workspace;
+    public User() {
+        this.id = null;
+        this.userName = null;
+        this.password = null;
+        this.role = null;
     }
 
     public String getUserName() {
@@ -37,7 +36,7 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,6 +58,10 @@ public class User implements Serializable {
 
     public Workspace getWorkspace() {
         return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
     }
 
     @Override

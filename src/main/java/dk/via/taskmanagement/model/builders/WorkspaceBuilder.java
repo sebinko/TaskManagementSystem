@@ -26,8 +26,9 @@ public class WorkspaceBuilder {
     }
 
     public Workspace build() {
-        Workspace workspace = new Workspace(name);
+        Workspace workspace = new Workspace();
         workspace.setId(id);
+        workspace.setName(name);
 
         if (users == null) {
             return workspace;

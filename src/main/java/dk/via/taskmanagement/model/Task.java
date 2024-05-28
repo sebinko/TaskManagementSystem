@@ -35,7 +35,7 @@ public class Task implements Serializable {
         workspace = null;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

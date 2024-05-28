@@ -36,8 +36,12 @@ public class UserBuilder {
     }
 
     public User build() {
-        User user = new User(userName, password, role, workspace);
+        User user = new User();
+        user.setUserName(userName);
+        user.setPassword(password);
+        user.setRole(role);
         user.setId(id);
+        user.setWorkspace(workspace);
         return user;
     }
 }
