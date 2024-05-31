@@ -16,52 +16,32 @@ import org.controlsfx.control.SegmentedButton;
 import java.util.ArrayList;
 
 public class WorkspaceView {
-    @FXML
-    Label workspaceName;
-    @FXML
-    Button manageWorkspaceButton;
-    @FXML
-    Region manageWorkspaceRegion;
-    @FXML
-    TextField name;
-    @FXML
-    TextArea description;
-    @FXML
-    SegmentedButton priority;
-    @FXML
-    SegmentedButton state;
-    @FXML
-    DatePicker deadline;
+    @FXML Label workspaceName;
+    @FXML Button manageWorkspaceButton;
+    @FXML Region manageWorkspaceRegion;
+    @FXML TextField name;
+    @FXML TextArea description;
+    @FXML SegmentedButton priority;
+    @FXML SegmentedButton state;
+    @FXML DatePicker deadline;
     StringProperty taskState;
     StringProperty taskPriority;
-    @FXML
-    ListView<Task> notStartedTasks;
-    @FXML
-    ListView<Task> inProgressTasks;
-    @FXML
-    ListView<Task> completedTasks;
+    @FXML ListView<Task> notStartedTasks;
+    @FXML ListView<Task> inProgressTasks;
+    @FXML ListView<Task> completedTasks;
     ObjectProperty<Task> selectedTask;
     BooleanProperty isNewTask;
-    @FXML
-    Button newButton;
-    @FXML
-    Button deleteButton;
-    @FXML
-    Button startButton;
-    @FXML
-    Button completeButton;
-    @FXML
-    TextField nameFilter;
-    @FXML
-    CheckComboBox<Task.Priority> priorityFilter;
+    @FXML Button newButton;
+    @FXML Button deleteButton;
+    @FXML Button startButton;
+    @FXML Button completeButton;
+    @FXML TextField nameFilter;
+    @FXML CheckComboBox<Task.Priority> priorityFilter;
     ListProperty<Task.Priority> checkedFilterPriorities;
-    @FXML
-    ListSelectionView<User> assignedUsers;
-    @FXML
-    CheckComboBox<User> assignedUsersFilter;
+    @FXML ListSelectionView<User> assignedUsers;
+    @FXML CheckComboBox<User> assignedUsersFilter;
     ListProperty<User> assignedUsersFilterList;
-    @FXML
-    Label message;
+    @FXML Label message;
     private ViewHandler viewHandler;
     private WorkspaceViewModel viewModel;
 

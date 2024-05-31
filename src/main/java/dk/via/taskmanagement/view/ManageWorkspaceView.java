@@ -40,7 +40,6 @@ public class ManageWorkspaceView {
 
         this.manageWorkspaceViewModel.init();
 
-
         manageWorkspaceViewModel.bindCurrentUsers(currentUsers.itemsProperty());
         this.currentUsersIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         this.currentUsersUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));

@@ -308,9 +308,20 @@ public class WorkspaceViewModel implements PropertyChangeListener {
     public synchronized void filterTasks() {
         if (tasks == null) return;
 
-        Predicate<Task> isAssignedToFilteredUser = task -> assignedUsersFilter.getValue().stream().anyMatch(user -> task.getUsers().stream().anyMatch(taskUser -> taskUser.getId().equals(user.getId())));
-        Predicate<Task> isNotAssigned = task -> task.getUsers().isEmpty() && assignedUsersFilter.getValue().stream().anyMatch(user -> user.getUserName().equals("NotAssigned"));
-
+        Predicate<Task> isAssignedToFilteredUser = task -> assignedUsersFilter
+                .getValue()
+                .stream()
+                .anyMatch(user -> task
+                        .getUsers()
+                        .stream()
+                        .anyMatch(taskUser -> taskUser.getId().equals(user.getId())));
+        Predicate<Task> isNotAssigned = task -> task
+                .getUsers()
+                .isEmpty() &&
+                assignedUsersFilter
+                        .getValue()
+                        .stream()
+                        .anyMatch(user -> user.getUserName().equals("NotAssigned"));
 
         notStartedTasks.clear();
         inProgressTasks.clear();
